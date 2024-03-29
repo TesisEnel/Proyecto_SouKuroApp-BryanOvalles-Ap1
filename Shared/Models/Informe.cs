@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shared.Models;
 
-public class Informe_Mensual
+public class Informe
 {
     [Key]
     public int InformeId { get; set; }
