@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Proyecto_SouKuroApp.DAL;
+using Proyecto_SouKuroApp.Data;
 using Shared.Models;
 using System.Linq.Expressions;
 
@@ -7,8 +7,8 @@ namespace Proyecto_SouKuroApp.Services
 {
     public class CompraServices
     {
-        private readonly Contexto _contexto;
-        public CompraServices(Contexto contexto)
+        private readonly ApplicationDbContext _contexto;
+        public CompraServices(ApplicationDbContext contexto)
         {
             _contexto = contexto;
         }
