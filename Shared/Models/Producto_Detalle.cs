@@ -17,6 +17,4 @@ public class Producto_Detalle
     [Required]
     public string Categoria { get; set; } = string.Empty;    
 
-    ICollection<Producto_Detalle> Productos_Detalles { get; set; } = new List<Producto_Detalle>();
-
 }

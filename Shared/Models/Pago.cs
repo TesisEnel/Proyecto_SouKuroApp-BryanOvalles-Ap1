@@ -19,11 +19,5 @@ public class Pago
     public string Metodo { get; set; } = string.Empty;
     [Required]
     public string Estado { get; set; } = string.Empty;
-    [Required]
-    public Pedido _Pedido { get; set; } = new Pedido();
-    [Required]
-    public Compra _Compra { get; set; } = new Compra();
-
-    ICollection<Pago> Pagos { get; set; } = new List<Pago>();
     
 }

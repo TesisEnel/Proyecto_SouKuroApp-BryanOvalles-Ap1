@@ -18,6 +18,4 @@ public class Venta
     [Required]
     public DateTime Fecha { get; set; } = DateTime.Now;
 
-    [Required]
-    public Producto producto { get; set; }
 }

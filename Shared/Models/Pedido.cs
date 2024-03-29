@@ -14,12 +14,8 @@ public class Pedido
     [Required]
     public DateTime Fecha_Pedido { get; set; } = DateTime.Now;
     [Required]
-    public Proveedor _Proveedor { get; set; } = new Proveedor();
-    [Required]
     public string Direccion { get; set; } = string.Empty;
     [Required]
-    public Compra compra { get; set; } = new Compra();
+    public string Estado { get; set; } = string.Empty;
     
-    ICollection<Pedido> Pedidos{ get; set; } = new List<Pedido>();
-
 }

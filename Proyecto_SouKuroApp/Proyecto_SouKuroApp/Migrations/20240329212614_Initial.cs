@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Proyecto_SouKuroApp.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateIdentitySchema : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,6 +48,148 @@ namespace Proyecto_SouKuroApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "compras",
+                columns: table => new
+                {
+                    CompraId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Fecha_Compra = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NFC = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    No_Compra = table.Column<int>(type: "int", nullable: false),
+                    Telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Cantidad = table.Column<int>(type: "int", nullable: false),
+                    SubTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ITBIS = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_compras", x => x.CompraId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Informes",
+                columns: table => new
+                {
+                    InformeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Fecha_Inicio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Fecha_Final = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Total_Compras = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Gastado = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Informes", x => x.InformeId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "pagos",
+                columns: table => new
+                {
+                    PagoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Fecha_Pago = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Monto = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Metodo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_pagos", x => x.PagoId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "pedidos",
+                columns: table => new
+                {
+                    PedidoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Fecha_Pedido = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Direccion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_pedidos", x => x.PedidoId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "producto_Detalles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductoId = table.Column<int>(type: "int", nullable: false),
+                    Categoria = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_producto_Detalles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "productos",
+                columns: table => new
+                {
+                    ProcuctoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Precio = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Stock = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_productos", x => x.ProcuctoId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "proveedores",
+                columns: table => new
+                {
+                    ProveedorId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Direccion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_proveedores", x => x.ProveedorId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "usuarios",
+                columns: table => new
+                {
+                    UsuarioId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre_Usuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Contrasena = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rol = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_usuarios", x => x.UsuarioId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ventas",
+                columns: table => new
+                {
+                    VentaId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NombreCliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ventas", x => x.VentaId);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,6 +298,27 @@ namespace Proyecto_SouKuroApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "detalleCompras",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompraId = table.Column<int>(type: "int", nullable: false),
+                    Nombre_Producto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Cantidad_Prod = table.Column<int>(type: "int", nullable: false),
+                    Compra = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_detalleCompras", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_detalleCompras_compras_Compra",
+                        column: x => x.Compra,
+                        principalTable: "compras",
+                        principalColumn: "CompraId");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -194,6 +357,11 @@ namespace Proyecto_SouKuroApp.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_detalleCompras_Compra",
+                table: "detalleCompras",
+                column: "Compra");
         }
 
         /// <inheritdoc />
@@ -215,10 +383,40 @@ namespace Proyecto_SouKuroApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "detalleCompras");
+
+            migrationBuilder.DropTable(
+                name: "Informes");
+
+            migrationBuilder.DropTable(
+                name: "pagos");
+
+            migrationBuilder.DropTable(
+                name: "pedidos");
+
+            migrationBuilder.DropTable(
+                name: "producto_Detalles");
+
+            migrationBuilder.DropTable(
+                name: "productos");
+
+            migrationBuilder.DropTable(
+                name: "proveedores");
+
+            migrationBuilder.DropTable(
+                name: "usuarios");
+
+            migrationBuilder.DropTable(
+                name: "ventas");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "compras");
         }
     }
 }

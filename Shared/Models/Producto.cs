@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ public class Producto
     [Required]
     public int Stock { get; set; } = 0;
 
-    ICollection<Producto> Productos { get; set; } = new List<Producto>();
+    [ForeignKey("ProductoId")]
+    ICollection<Producto_Detalle> ProductoDetalle { get; set; } = new List<Producto_Detalle>();
     
 }
