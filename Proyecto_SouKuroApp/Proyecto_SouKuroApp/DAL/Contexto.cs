@@ -20,5 +20,13 @@ namespace Proyecto_SouKuroApp.DAL
         public DbSet<Compras_Detalles> detalleCompras { get; set; }
         public DbSet<Producto_Detalle> producto_Detalles { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Usuario>().HasData(new List<Usuario>() {
+                new Usuario(){UsuarioId=1, Nombre_Usuario="Admin", Contrasena="123456",Rol="Admin"}
+            
+            });
+        }
     }
 }
