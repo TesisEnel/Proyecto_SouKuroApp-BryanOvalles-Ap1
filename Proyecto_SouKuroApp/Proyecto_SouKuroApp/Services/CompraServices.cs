@@ -37,7 +37,7 @@ namespace Proyecto_SouKuroApp.Services
         }
         public async Task<bool> Eliminar(Compra compra)
         {
-            var c = await _contexto.compras.FindAsync(compra.Cantidad);
+            var c = await _contexto.compras.FindAsync(compra.CompraId);
             _contexto.Entry(c!).State = EntityState.Detached;
             _contexto.Entry(compra).State = EntityState.Deleted;
             return await _contexto.SaveChangesAsync() > 0;
