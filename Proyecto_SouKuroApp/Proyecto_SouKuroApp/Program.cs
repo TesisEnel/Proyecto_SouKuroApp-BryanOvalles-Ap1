@@ -5,7 +5,7 @@ using Proyecto_SouKuroApp.Client.Pages;
 using Proyecto_SouKuroApp.Components;
 using Proyecto_SouKuroApp.Components.Account;
 using Proyecto_SouKuroApp.Data;
-
+using Proyecto_SouKuroApp.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -28,6 +28,8 @@ builder.Services.AddAuthentication(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddScoped<CompraServices>();
 
 builder.Services.AddQuickGridEntityFrameworkAdapter();;
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
