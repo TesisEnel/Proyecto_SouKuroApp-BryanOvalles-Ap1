@@ -23,7 +23,7 @@ namespace Proyecto_SouKuroApp.Services
         }
         public async Task<bool> Modificar(Informe informe)
         {
-            var c = await _contexto.compras.FindAsync(informe.InformeId);
+            var c = await _contexto.Informes.FindAsync(informe.InformeId);
             _contexto.Entry(c!).State = EntityState.Detached;
             _contexto.Entry(informe).State = EntityState.Modified;
             return await _contexto.SaveChangesAsync() > 0;
@@ -37,7 +37,7 @@ namespace Proyecto_SouKuroApp.Services
         }
         public async Task<bool> Eliminar(Informe informe)
         {
-            var c = await _contexto.compras.FindAsync(informe.InformeId);
+            var c = await _contexto.Informes.FindAsync(informe.InformeId);
             _contexto.Entry(c!).State = EntityState.Detached;
             _contexto.Entry(informe).State = EntityState.Deleted;
             return await _contexto.SaveChangesAsync() > 0;

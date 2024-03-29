@@ -23,7 +23,7 @@ namespace Proyecto_SouKuroApp.Services
         }
         public async Task<bool> Modificar(Pago pago)
         {
-            var c = await _contexto.compras.FindAsync(pago.PagoId);
+            var c = await _contexto.pagos.FindAsync(pago.PagoId);
             _contexto.Entry(c!).State = EntityState.Detached;
             _contexto.Entry(pago).State = EntityState.Modified;
             return await _contexto.SaveChangesAsync() > 0;
@@ -37,7 +37,7 @@ namespace Proyecto_SouKuroApp.Services
         }
         public async Task<bool> Eliminar(Pago pago)
         {
-            var c = await _contexto.compras.FindAsync(pago.PagoId);
+            var c = await _contexto.pagos.FindAsync(pago.PagoId);
             _contexto.Entry(c!).State = EntityState.Detached;
             _contexto.Entry(pago).State = EntityState.Deleted;
             return await _contexto.SaveChangesAsync() > 0;

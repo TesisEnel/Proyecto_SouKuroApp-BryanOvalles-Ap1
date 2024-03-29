@@ -23,7 +23,7 @@ namespace Proyecto_SouKuroApp.Services
         }
         public async Task<bool> Modificar(Producto producto)
         {
-            var c = await _contexto.compras.FindAsync(producto.ProcuctoId);
+            var c = await _contexto.productos.FindAsync(producto.ProcuctoId);
             _contexto.Entry(c!).State = EntityState.Detached;
             _contexto.Entry(producto).State = EntityState.Modified;
             return await _contexto.SaveChangesAsync() > 0;
@@ -37,7 +37,7 @@ namespace Proyecto_SouKuroApp.Services
         }
         public async Task<bool> Eliminar(Producto producto)
         {
-            var c = await _contexto.compras.FindAsync(producto.ProcuctoId);
+            var c = await _contexto.productos.FindAsync(producto.ProcuctoId);
             _contexto.Entry(c!).State = EntityState.Detached;
             _contexto.Entry(producto).State = EntityState.Deleted;
             return await _contexto.SaveChangesAsync() > 0;

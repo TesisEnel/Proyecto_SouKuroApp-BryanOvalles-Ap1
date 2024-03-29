@@ -23,7 +23,7 @@ namespace Proyecto_SouKuroApp.Services
         }
         public async Task<bool> Modificar(Pedido pedido)
         {
-            var c = await _contexto.compras.FindAsync(pedido.PedidoId);
+            var c = await _contexto.pedidos.FindAsync(pedido.PedidoId);
             _contexto.Entry(c!).State = EntityState.Detached;
             _contexto.Entry(pedido).State = EntityState.Modified;
             return await _contexto.SaveChangesAsync() > 0;
@@ -37,7 +37,7 @@ namespace Proyecto_SouKuroApp.Services
         }
         public async Task<bool> Eliminar(Pedido pedido)
         {
-            var c = await _contexto.compras.FindAsync(pedido.PedidoId);
+            var c = await _contexto.pedidos.FindAsync(pedido.PedidoId);
             _contexto.Entry(c!).State = EntityState.Detached;
             _contexto.Entry(pedido).State = EntityState.Deleted;
             return await _contexto.SaveChangesAsync() > 0;
