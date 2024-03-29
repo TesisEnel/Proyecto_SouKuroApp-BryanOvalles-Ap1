@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Proyecto_SouKuroApp.DAL;
+using Proyecto_SouKuroApp.Data;
 using Shared.Models;
 using System.Linq.Expressions;
 
@@ -7,8 +7,8 @@ namespace Proyecto_SouKuroApp.Services
 {
     public class PagosServices
     {
-        private readonly Contexto _contexto;
-        public PagosServices(Contexto contexto)
+        private readonly ApplicationDbContext _contexto;
+        public PagosServices(ApplicationDbContext contexto)
         {
             _contexto = contexto;
         }

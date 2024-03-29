@@ -1,0 +1,29 @@
+﻿@page "/compras"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject Proyecto_SouKuroApp.Data.ApplicationDbContext DB
+@using Shared.Models
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="compras/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="DB.compras">
+    <PropertyColumn Property="compra => compra.Fecha_Compra" />
+    <PropertyColumn Property="compra => compra.NFC" />
+    <PropertyColumn Property="compra => compra.No_Compra" />
+    <PropertyColumn Property="compra => compra.Telefono" />
+    <PropertyColumn Property="compra => compra.Cantidad" />
+    <PropertyColumn Property="compra => compra.SubTotal" />
+    <PropertyColumn Property="compra => compra.ITBIS" />
+    <PropertyColumn Property="compra => compra.Total" />
+
+    <TemplateColumn Context="compra">
+        <a href="@($"compras/edit?compraid={compra.CompraId}")">Edit</a> |
+        <a href="@($"compras/details?compraid={compra.CompraId}")">Details</a> |
+        <a href="@($"compras/delete?compraid={compra.CompraId}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>

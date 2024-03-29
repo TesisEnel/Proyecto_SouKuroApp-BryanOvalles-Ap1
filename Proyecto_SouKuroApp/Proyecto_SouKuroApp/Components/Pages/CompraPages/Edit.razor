@@ -1,0 +1,121 @@
+﻿@page "/Compras/edit"
+@inject Proyecto_SouKuroApp.Data.ApplicationDbContext DB
+@using Shared.Models
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h4>Compra</h4>
+<hr />
+@if (Compra is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="Compra" OnValidSubmit="UpdateCompra" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <input type="hidden" name="Compra.CompraId" value="@Compra.CompraId" />
+                <div class="mb-3">
+                    <label for="fecha_compra" class="form-label">Fecha_Compra:</label>
+                    <InputDate id="fecha_compra" @bind-Value="Compra.Fecha_Compra" class="form-control" />
+                    <ValidationMessage For="() => Compra.Fecha_Compra" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="nfc" class="form-label">NFC:</label>
+                    <InputText id="nfc" @bind-Value="Compra.NFC" class="form-control" />
+                    <ValidationMessage For="() => Compra.NFC" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="no_compra" class="form-label">No_Compra:</label>
+                    <InputNumber id="no_compra" @bind-Value="Compra.No_Compra" class="form-control" />
+                    <ValidationMessage For="() => Compra.No_Compra" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="telefono" class="form-label">Telefono:</label>
+                    <InputText id="telefono" @bind-Value="Compra.Telefono" class="form-control" />
+                    <ValidationMessage For="() => Compra.Telefono" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="cantidad" class="form-label">Cantidad:</label>
+                    <InputNumber id="cantidad" @bind-Value="Compra.Cantidad" class="form-control" />
+                    <ValidationMessage For="() => Compra.Cantidad" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="subtotal" class="form-label">SubTotal:</label>
+                    <InputNumber id="subtotal" @bind-Value="Compra.SubTotal" class="form-control" />
+                    <ValidationMessage For="() => Compra.SubTotal" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="itbis" class="form-label">ITBIS:</label>
+                    <InputNumber id="itbis" @bind-Value="Compra.ITBIS" class="form-control" />
+                    <ValidationMessage For="() => Compra.ITBIS" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="total" class="form-label">Total:</label>
+                    <InputNumber id="total" @bind-Value="Compra.Total" class="form-control" />
+                    <ValidationMessage For="() => Compra.Total" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/compras">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public int CompraId { get; set; }
+
+    [SupplyParameterFromForm]
+    public Compra? Compra { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Compra ??= await DB.compras.FirstOrDefaultAsync(m => m.CompraId == CompraId);
+
+        if (Compra is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task UpdateCompra()
+    {
+        DB.Attach(Compra!).State = EntityState.Modified;
+
+        try
+        {
+            await DB.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!CompraExists(Compra!.CompraId))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/compras");
+    }
+
+    bool CompraExists(int compraid)
+    {
+        return DB.compras.Any(e => e.CompraId == compraid);
+    }
+}

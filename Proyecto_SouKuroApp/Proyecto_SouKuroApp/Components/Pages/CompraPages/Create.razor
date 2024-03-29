@@ -1,0 +1,78 @@
+﻿@page "/compras/create"
+@inject Proyecto_SouKuroApp.Data.ApplicationDbContext DB
+@using Shared.Models
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h4>Compra</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="Compra" OnValidSubmit="AddCompra" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+            <div class="mb-3">
+                <label for="fecha_compra" class="form-label">Fecha_Compra:</label> 
+                <InputDate id="fecha_compra" @bind-Value="Compra.Fecha_Compra" class="form-control" /> 
+                <ValidationMessage For="() => Compra.Fecha_Compra" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="nfc" class="form-label">NFC:</label> 
+                <InputText id="nfc" @bind-Value="Compra.NFC" class="form-control" /> 
+                <ValidationMessage For="() => Compra.NFC" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="no_compra" class="form-label">No_Compra:</label> 
+                <InputNumber id="no_compra" @bind-Value="Compra.No_Compra" class="form-control" /> 
+                <ValidationMessage For="() => Compra.No_Compra" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="telefono" class="form-label">Telefono:</label> 
+                <InputText id="telefono" @bind-Value="Compra.Telefono" class="form-control" /> 
+                <ValidationMessage For="() => Compra.Telefono" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="cantidad" class="form-label">Cantidad:</label> 
+                <InputNumber id="cantidad" @bind-Value="Compra.Cantidad" class="form-control" /> 
+                <ValidationMessage For="() => Compra.Cantidad" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="subtotal" class="form-label">SubTotal:</label> 
+                <InputNumber id="subtotal" @bind-Value="Compra.SubTotal" class="form-control" /> 
+                <ValidationMessage For="() => Compra.SubTotal" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="itbis" class="form-label">ITBIS:</label> 
+                <InputNumber id="itbis" @bind-Value="Compra.ITBIS" class="form-control" /> 
+                <ValidationMessage For="() => Compra.ITBIS" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="total" class="form-label">Total:</label> 
+                <InputNumber id="total" @bind-Value="Compra.Total" class="form-control" /> 
+                <ValidationMessage For="() => Compra.Total" class="text-danger" /> 
+            </div>        
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/compras">Back to List</a>
+</div>
+
+@code {
+
+    [SupplyParameterFromForm]
+    public Compra Compra { get; set; } = new();
+
+    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    public async Task AddCompra()
+    {
+        DB.compras.Add(Compra);
+        await DB.SaveChangesAsync();
+        NavigationManager.NavigateTo("/compras");
+    }
+}
