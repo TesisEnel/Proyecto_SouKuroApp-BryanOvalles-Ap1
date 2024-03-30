@@ -13,7 +13,7 @@ namespace Shared.Models;
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("CompraId")]
+    
         public int CompraId { get; set; }
 
         [Required] 

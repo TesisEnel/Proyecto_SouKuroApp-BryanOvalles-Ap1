@@ -50,8 +50,10 @@ namespace Proyecto_SouKuroApp.Services
 
         public async Task<bool> Eliminar(Compra compra)
         {
-            _contexto.compras.Remove(compra);
-            return await _contexto.SaveChangesAsync() > 0;
+            var Eliminar = await _contexto.compras
+            .Where(s => s.CompraId == compra.CompraId)
+             .ExecuteDeleteAsync();
+            return Eliminar > 0;
         }
 
         public async Task<Compra?> Buscar(int CompraId)
@@ -68,6 +70,7 @@ namespace Proyecto_SouKuroApp.Services
                 .AsNoTracking() // Agregar esta línea
                 .FirstOrDefaultAsync(s => s.NFC == nfc);
         }
+
 
         public async Task<List<Compra>> Listar(Expression<Func<Compra, bool>> Criterio)
         {
