@@ -1,0 +1,100 @@
+﻿@page "/usuarioCreate"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject UsuariosServices usuarioservice
+@using Shared.Models;
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h4>Usuario</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="usuario" OnValidSubmit="Guardar" FormName="usuarioCreate" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+            <div class="mb-3">
+                <label for="UsuarioId" class="form-label">UsuarioId:</label>
+                <InputNumber id="UsuarioId" @bind-Value="usuario.UsuarioId" class="form-control" />
+                <ValidationMessage For="() => usuario.UsuarioId" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="NombreUsuario" class="form-label">NombreUsuario:</label>
+                <InputText id="NombreUsuario" @bind-Value="usuario.Nombre_Usuario" class="form-control" />
+                <ValidationMessage For="() => usuario.Nombre_Usuario" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="contrasena" class="form-label">contrasena:</label>
+                <InputText id="contrasena" @bind-Value="usuario.Contrasena" class="form-control" />
+                <ValidationMessage For="() => usuario.Contrasena" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="rol" class="form-label">Rol:</label>
+                <InputText id="rol" @bind-Value="usuario.Rol" class="form-control" />
+                <ValidationMessage For="() => usuario.Rol" class="text-danger" />
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+
+     
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/usuario">Back to List</a>
+</div>
+
+@code {
+    [Parameter]
+    public int UsuarioId { get; set; }
+    public Usuario usuario { get; set; } = new Usuario();
+    public string Mensaje = " ";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioId > 0)
+        {
+            this.usuario = await usuarioservice.Buscar(UsuarioId);
+            if (this.usuario != null)
+            {
+                await this.Buscar();
+            }
+            else
+            {
+                Navigation.NavigateTo("/Error");
+            }
+        }
+
+
+
+        
+    }
+
+
+    public async Task Buscar()
+    {
+        var usuarioEncontrado = await usuarioservice.Buscar(usuario.UsuarioId);
+
+        if (usuarioEncontrado != null)
+        {
+            this.usuario = usuarioEncontrado;
+        }
+    }
+    public async Task Guardar()
+    {
+        var guardo = await usuarioservice.Guardar(usuario);
+        if (guardo)
+        {
+
+            await Task.Delay(3000);
+            Atras();
+        }
+
+    }
+    void Atras()
+    {
+        Navigation.NavigateTo("/usuario");
+    }
+}

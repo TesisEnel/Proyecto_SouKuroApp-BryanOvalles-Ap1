@@ -1,0 +1,57 @@
+﻿@page "/detailsUsuario"
+@page "/detailsUsuario/{UsuarioId:int}"
+@inject UsuariosServices usuarioservice
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@using Shared.Models
+
+<div class="card">
+   
+    <div class="card-body">
+        <h5 class="card-title">Detalles del Usuario</h5>
+        <dl class="row">
+            <dt class="col-sm-3">UsuarioId:</dt>
+            <dd class="col-sm-9">@usuario.UsuarioId</dd>
+
+            <dt class="col-sm-3">Nombre Usuario</dt>
+            <dd class="col-sm-9">@usuario.Nombre_Usuario</dd>
+
+
+            <dt class="col-sm-3">Contrasena:</dt>
+            <dd class="col-sm-9">@usuario.Contrasena</dd>
+
+            <dt class="col-sm-3">Rol:</dt>
+            <dd class="col-sm-9">@usuario.Rol</dd>
+
+
+
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a href="/usuario" class="btn btn-outline-primary bi bi bi-arrow-return-left"> Volver</a>
+        
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int UsuarioId { get; set; }
+
+    public Usuario usuario { get; set; } = new Usuario();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        usuario = await usuarioservice.Buscar(UsuarioId);
+
+
+
+    }
+
+
+    void Atras()
+    {
+        Navigation.NavigateTo("/usuario");
+    }
+}
