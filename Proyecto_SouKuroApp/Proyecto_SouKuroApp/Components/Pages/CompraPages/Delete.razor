@@ -81,17 +81,33 @@
     protected override async Task OnInitializedAsync()
     {
 
-       // compra = await compraservice.Buscar(CompraId);
+        compra = await compraservice.GetCompras(CompraId);
+
+        if (compra != null && compra.Detalle != null)
+        {
+            listaDetalles = compra.Detalle.ToList();
+        }
+        else
+        {
+            listaDetalles = new List<Compras_Detalles>();
+        }
+
+        Detalles = new Compras_Detalles(); // Inicializar Detalles
+        
+        /*compra.CompraId = CompraId;
+         * 
+     
+        // compra = await compraservice.Buscar(CompraId);
         if (compra != null)
         {
             listaDetalles = compra.Detalle
                   .Where(c=> c.CompraId==compra.CompraId)
                     .ToList();
             await Buscar(); 
-        }
+        }*/
 
     }
-    public async Task Buscar()
+   /* public async Task Buscar()
     {
         var compraEncontrado = await compraservice.Buscar(compra.CompraId);
 
@@ -99,7 +115,7 @@
         {
             this.compra = compraEncontrado;
         }
-    }
+    }*/
 
     public async Task Eliminar()
     {
