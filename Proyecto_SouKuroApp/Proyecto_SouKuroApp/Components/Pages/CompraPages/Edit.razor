@@ -1,121 +1,218 @@
-﻿@page "/Compras/edit"
-@inject Proyecto_SouKuroApp.Data.ApplicationDbContext DB
-@using Shared.Models
-@inject NavigationManager NavigationManager
-@using Microsoft.EntityFrameworkCore
+﻿@page "/comprasEdit"
+@page "/comprasEdit/{CompraId:int}"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject CompraServices compraservice
+@using Shared.Models;
 
 <PageTitle>Edit</PageTitle>
 
-<h1>Edit</h1>
+<EditForm Model="compra" OnValidSubmit="Modificar">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h1>Editar Compra </h1>
+        </div>
+        <div class=" card-body">
+            <label>CompraId</label>
 
-<h4>Compra</h4>
-<hr />
-@if (Compra is null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <div class="row">
-        <div class="col-md-4">
-            <EditForm method="post" Model="Compra" OnValidSubmit="UpdateCompra" FormName="edit" Enhance>
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-                <input type="hidden" name="Compra.CompraId" value="@Compra.CompraId" />
-                <div class="mb-3">
-                    <label for="fecha_compra" class="form-label">Fecha_Compra:</label>
-                    <InputDate id="fecha_compra" @bind-Value="Compra.Fecha_Compra" class="form-control" />
-                    <ValidationMessage For="() => Compra.Fecha_Compra" class="text-danger" />
-                </div>
-                <div class="mb-3">
-                    <label for="nfc" class="form-label">NFC:</label>
-                    <InputText id="nfc" @bind-Value="Compra.NFC" class="form-control" />
-                    <ValidationMessage For="() => Compra.NFC" class="text-danger" />
-                </div>
-                <div class="mb-3">
-                    <label for="no_compra" class="form-label">No_Compra:</label>
-                    <InputNumber id="no_compra" @bind-Value="Compra.No_Compra" class="form-control" />
-                    <ValidationMessage For="() => Compra.No_Compra" class="text-danger" />
-                </div>
-                <div class="mb-3">
-                    <label for="telefono" class="form-label">Telefono:</label>
-                    <InputText id="telefono" @bind-Value="Compra.Telefono" class="form-control" />
-                    <ValidationMessage For="() => Compra.Telefono" class="text-danger" />
-                </div>
-                <div class="mb-3">
-                    <label for="cantidad" class="form-label">Cantidad:</label>
-                    <InputNumber id="cantidad" @bind-Value="Compra.Cantidad" class="form-control" />
-                    <ValidationMessage For="() => Compra.Cantidad" class="text-danger" />
-                </div>
-                <div class="mb-3">
-                    <label for="subtotal" class="form-label">SubTotal:</label>
-                    <InputNumber id="subtotal" @bind-Value="Compra.SubTotal" class="form-control" />
-                    <ValidationMessage For="() => Compra.SubTotal" class="text-danger" />
-                </div>
-                <div class="mb-3">
-                    <label for="itbis" class="form-label">ITBIS:</label>
-                    <InputNumber id="itbis" @bind-Value="Compra.ITBIS" class="form-control" />
-                    <ValidationMessage For="() => Compra.ITBIS" class="text-danger" />
-                </div>
-                <div class="mb-3">
-                    <label for="total" class="form-label">Total:</label>
-                    <InputNumber id="total" @bind-Value="Compra.Total" class="form-control" />
-                    <ValidationMessage For="() => Compra.Total" class="text-danger" />
-                </div>
-                <button type="submit" class="btn btn-primary">Save</button>
-            </EditForm>
+            <div class="input-group">
+                <InputNumber min="0" @bind-Value="compra.CompraId" class="id-input"></InputNumber>
+            </div>
+            <div>
+                <label>Fecha de compra:</label>
+                <InputDate @bind-Value="compra.Fecha_Compra" class="form-control"></InputDate>
+                <ValidationMessage For="@(() => compra.Fecha_Compra)" />
+            </div>
+
+            <div>
+                <label>NFC:</label>
+                <InputText @bind-Value="compra.NFC" class="form-control"></InputText>
+                <ValidationMessage For="@(() => compra.NFC)" />
+            </div>
+            <div>
+                <label>NO_Compra:</label>
+                <InputNumber @bind-Value="compra.No_Compra" class="form-control"></InputNumber>
+                <ValidationMessage For="@(() => compra.No_Compra)" />
+            </div>
+            <div>
+                <label>Telefono:</label>
+                <InputText @bind-Value="compra.Telefono" class="form-control" readonly></InputText>
+                <ValidationMessage For="@(() => compra.Telefono)" />
+            </div>
+            <div>
+                <label>Cantidad:</label>
+                <InputNumber @bind-Value="compra.Cantidad" class="form-control" readonly></InputNumber>
+                <ValidationMessage For="@(() => compra.Cantidad)" />
+            </div>
+            <div>
+                <label>SubTotal:</label>
+                <InputNumber @bind-Value="compra.SubTotal" class="form-control" ></InputNumber>
+                <ValidationMessage For="@(() => compra.SubTotal)" />
+            </div>
+            <div>
+                <label>ITEBIS:</label>
+                <InputNumber @bind-Value="compra.ITBIS" class="form-control"></InputNumber>
+                <ValidationMessage For="@(() => compra.ITBIS)" />
+            </div>
+            <div>
+                <label>Total:</label>
+                <InputNumber @bind-Value="compra.Total" class="form-control"></InputNumber>
+                <ValidationMessage For="@(() => compra.Total)" />
+            </div>
+        </div>
+        <div class="card-footer ">
+
+            <div class="card-footer">
+                <button type="button" class="btn btn-outline-primary" @onclick="Atras">Volver <i class="bi bi-arrow-return-left" /></button>
+                <button type="submit" class="btn btn-outline-success">Guardar <i class="bi bi-floppy-fill" /></button>
+            </div>
+
         </div>
     </div>
-}
+
+             @*Detalles:*@
+             <div class="card card-header mt-5">
+                 <h3>Detalle de Compra</h3>
+
+                 <div class="row">
+                     <div class="col">
+                         <label class="fw-bold mt-3">CompraId</label>
+                         <InputNumber @bind-Value="Detalles.CompraId" class="form-control"></InputNumber>
+                         <ValidationMessage For="@(() => Detalles.CompraId)" />
+                     </div>
+                     <div class="col">
+                         <label class="fw-bold mt-3">Nombre del Producto</label>
+                         <InputText @bind-Value="Detalles.Nombre_Producto" class="form-control"></InputText>
+                         <ValidationMessage For="@(() => Detalles.Nombre_Producto)" />
+                     </div>
+                     <div class="col">
+                         <label class="fw-bold mt-3">Cantidad del Producto</label>
+                         <InputNumber @bind-Value="Detalles.Cantidad_Prod" class="form-control"></InputNumber>
+                         <ValidationMessage For="@(() => Detalles.Cantidad_Prod)" />
+                     </div>
+                 </div>
+                 <div class="card-footer d-flex justify-content-center">
+                     <button type="button" @onclick="AgregarDetalle" class="btn btn-outline-success">Agregar</button>
+                 </div>
+                 <table class='table table-bordered table-hover'>
+                     <thead>
+                         <tr>
+
+                             <th>Nombre Producto</th>
+                             <th>Cantidad</th>
+                             <th></th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         @foreach (var detalle in listaDetalles)
+                            {
+
+                                <tr>
+
+                                    <td>@detalle.Nombre_Producto</td>
+                                    <td>@detalle.Cantidad_Prod</td>
+                                    <td><button type="button" class="btn btn-outline-danger bi bi-trash-fill" @onclick=@(() => RemoverDetalle(detalle))>Eliminar</button></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </EditForm>
+        
+
 
 <div>
     <a href="/compras">Back to List</a>
 </div>
 
 @code {
-    [SupplyParameterFromQuery]
-    public int CompraId { get; set; }
 
-    [SupplyParameterFromForm]
-    public Compra? Compra { get; set; }
+    [Parameter]
+    public int CompraId { get; set; }
+    public Compra compra { get; set; } = new Compra();
+    public string Mensaje = " ";
+    public Compras_Detalles Detalles { get; set; } = new Compras_Detalles();
+    public List<Compras_Detalles> listaDetalles = new List<Compras_Detalles>();
+    private bool Existe = false;
 
     protected override async Task OnInitializedAsync()
     {
-        Compra ??= await DB.compras.FirstOrDefaultAsync(m => m.CompraId == CompraId);
-
-        if (Compra is null)
+        if (CompraId > 0)
         {
-            NavigationManager.NavigateTo("notfound");
-        }
-    }
-
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see https://aka.ms/RazorPagesCRUD.
-    public async Task UpdateCompra()
-    {
-        DB.Attach(Compra!).State = EntityState.Modified;
-
-        try
-        {
-            await DB.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!CompraExists(Compra!.CompraId))
+            compra = await compraservice.GetCompras(CompraId);
+            if (compra != null)
             {
-                NavigationManager.NavigateTo("notfound");
+                listaDetalles = compra.Detalle.ToList();
             }
             else
             {
-                throw;
+                Navigation.NavigateTo("/Error");
             }
         }
-
-        NavigationManager.NavigateTo("/compras");
+        else
+        {
+            Navigation.NavigateTo("/Error");
+        }
+            compra.Fecha_Compra = DateTime.Now;
     }
 
-    bool CompraExists(int compraid)
+
+    public async Task Buscar()
     {
-        return DB.compras.Any(e => e.CompraId == compraid);
+        var compraEncontrado = await compraservice.Buscar(compra.CompraId);
+
+        if (compraEncontrado != null)
+        {
+            this.compra = compraEncontrado;
+        }
+    }
+    public async Task Modificar()
+    {
+        if (await Validar())
+            return;
+        else
+        {
+            var compraModificado = await compraservice.Guardar(compra);
+            if (compraModificado)
+            {
+                Atras();
+            }
+           
+        }
+    }
+
+    public async Task<bool> Validar()
+    {
+        Existe = (await compraservice.Listar(m => m.NFC!.ToLower() == compra.NFC!.ToLower()
+           && m.CompraId != compra.CompraId)).Any();
+
+        return Existe;
+    }
+
+    void Atras()
+    {
+        Navigation.NavigateTo("/compras");
+    }
+
+    public async Task AgregarDetalle()
+    {
+        if (compra != null)
+        {
+
+            Detalles.CompraId = compra.CompraId;
+            compra.Cantidad += Detalles.Cantidad_Prod;
+            listaDetalles.Add(Detalles);
+            compra.Detalle.Add(Detalles);
+            // Detalles = new Vehiculos_Detalle();
+        }
+    }
+
+    public async Task RemoverDetalle(Compras_Detalles details)
+    {
+
+        compra.Cantidad -= Detalles.Cantidad_Prod;
+        Detalles = details;
+        listaDetalles.Remove(details);
     }
 }
