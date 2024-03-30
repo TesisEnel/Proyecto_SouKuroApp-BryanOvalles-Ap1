@@ -1,29 +1,146 @@
 ﻿@page "/compras"
-@using Microsoft.AspNetCore.Components.QuickGrid
-@inject Proyecto_SouKuroApp.Data.ApplicationDbContext DB
+@page "/compras/{CompraId:int}"
+@using Microsoft.AspNetCore.Authorization
 @using Shared.Models
+@attribute [Authorize]
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject CompraServices compraservice
 
-<PageTitle>Index</PageTitle>
+<div class="card">
+    <div class="card-header">
+        <h3>Detalles de Compra</h3>
+        <a href="/compras/create" class="btn btn-outline-primary bi bi-plus-square">  Crear</a>
+    </div>
+    <div class="card-body">
 
-<h1>Index</h1>
+        <div class="input-group-text">
 
-<p>
-    <a href="compras/create">Create New</a>
-</p>
+            <label class="form-control-label col-1">Desde:</label>
+            <div class="col-3">
+                <input class="form-control" type="date" @bind="Desde" />
+            </div>
 
-<QuickGrid Class="table" Items="DB.compras">
-    <PropertyColumn Property="compra => compra.Fecha_Compra" />
-    <PropertyColumn Property="compra => compra.NFC" />
-    <PropertyColumn Property="compra => compra.No_Compra" />
-    <PropertyColumn Property="compra => compra.Telefono" />
-    <PropertyColumn Property="compra => compra.Cantidad" />
-    <PropertyColumn Property="compra => compra.SubTotal" />
-    <PropertyColumn Property="compra => compra.ITBIS" />
-    <PropertyColumn Property="compra => compra.Total" />
+            <label class="form-control-label col-1">Hasta:</label>
+            <div class="col-3">
+                <input class="form-control" type="date" @bind="Hasta" />
+            </div>
 
-    <TemplateColumn Context="compra">
-        <a href="@($"compras/edit?compraid={compra.CompraId}")">Edit</a> |
-        <a href="@($"compras/details?compraid={compra.CompraId}")">Details</a> |
-        <a href="@($"compras/delete?compraid={compra.CompraId}")">Delete</a>
-    </TemplateColumn>
-</QuickGrid>
+            <div class="col-5">
+                <button type="button" @onclick="Buscar" class="btn btn-primary  ">
+                    <i class="bi bi-search" />
+                    <br /> Buscar
+                </button>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-3">
+                <label>Filtrar Por</label>
+                <InputSelect @bind-Value="Opcion" class="form-select">
+                    <option value="0" selected disabled>Seleccione</option>
+                    <option value="1">CompraID</option>
+                    <option value="2">NoCompra</option>
+                </InputSelect>
+            </div>
+
+            @if (Opcion == 1)
+            {
+                <div class="col-3">
+                    <label>ID</label>
+                    <div class="input-group">
+                        <InputNumber @bind-Value="CompraId" class="form-control"></InputNumber>
+                    </div>
+                </div>
+            }
+          
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">ID</th>
+                    <th scope="col" class="text-center">Fecha de compra</th>
+                    <th scope="col" class="text-center">NFC</th>
+                    <th scope="col" class="text-center">No.Compra</th>
+                    <th scope="col" class="text-center">T&eacute;lefono</th>
+                    <th scope="col" class="text-center">Cantidad</th>
+                    <th scope="col" class="text-center">SubTotal</th>
+                    <th scope="col" class="text-center">Itebis</th>
+                    <th scope="col" class="text-center">Total</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ListaCompras)
+                {
+                    <tr>
+                        <td class="text-center">@item.CompraId</td>
+                        <td class="text-center">@item.Fecha_Compra.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center">@item.NFC</td>
+                        <td class="text-center">@item.No_Compra</td>
+                        <td class="text-center">@item.Telefono</td>
+                        <td class="text-center">@item.Cantidad</td>
+                        <td class="text-center">@item.SubTotal</td>
+                        <td class="text-center">@item.Total</td>
+                        <td>
+                            <a href="/Delete/@item.CompraId" class="btn btn-danger bi bi-trash-fill">Delete</a>
+                            <a href="/comprasEdit/@item.CompraId" class="btn btn-primary bi-box-arrow-up-right">Edit</a>
+                            <a href="/Details/@item.CompraId" class="btn btn-success bi-box-arrow-up-right">Detalles</a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+       
+    </div>
+    <div class="card-footer">
+        <a href="/" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int CompraId { get; set; }
+    public Compra compra { get; set; } = new Compra();
+    public List<Compra> ListaCompras { get; set; } = new List<Compra>();
+    public int Opcion = 0;
+    public string Nombre { get; set; }
+
+    public int ClientesId { get; set; }
+
+
+    public DateTime Desde { get; set; }
+    public DateTime Hasta { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaCompras = await compraservice.Listar(t => true);
+        Desde = DateTime.Now.AddMonths(-1);
+        Hasta = DateTime.Now;
+    }
+    public async Task Buscar()
+    {
+        Hasta = new DateTime(Hasta.Year, Hasta.Month, Hasta.Day, 23, 59, 59);
+        if (Opcion == 0)
+        {
+            ListaCompras = await compraservice.Listar(t => t.Fecha_Compra >= Desde && t.Fecha_Compra <= Hasta);
+        }
+        if (Opcion == 1)
+        {
+            if (CompraId <= 0)
+                ListaCompras = await compraservice.Listar(t => true);
+            else
+                ListaCompras = await compraservice.Listar(t => t.CompraId == CompraId && t.Fecha_Compra >= Desde && t.Fecha_Compra <= Hasta);
+        }
+      
+    }
+}
