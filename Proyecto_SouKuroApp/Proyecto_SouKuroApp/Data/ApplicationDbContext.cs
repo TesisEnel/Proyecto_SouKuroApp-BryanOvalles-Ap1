@@ -6,6 +6,7 @@ namespace Proyecto_SouKuroApp.Data
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
     {
+
         public DbSet<Compra> compras { get; set; }
         public DbSet<Producto> productos { get; set; }
         public DbSet<Usuario> usuarios { get; set; }
