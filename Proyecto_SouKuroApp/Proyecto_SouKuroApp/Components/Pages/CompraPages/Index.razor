@@ -123,6 +123,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+
         ListaCompras = await compraservice.Listar(t => true);
         Desde = DateTime.Now.AddMonths(-1);
         Hasta = DateTime.Now;
