@@ -7,7 +7,7 @@
 
 <PageTitle>Edit</PageTitle>
 
-<EditForm Model="compra" OnValidSubmit="Guardar">
+<EditForm Model="compra" OnValidSubmit="Modificar">
     <DataAnnotationsValidator />
     <div class="card">
         <div class="card-header">
@@ -134,7 +134,7 @@
     public string Mensaje = " ";
     public Compras_Detalles Detalles { get; set; } = new Compras_Detalles();
     public List<Compras_Detalles> listaDetalles = new List<Compras_Detalles>();
-
+    private bool Existe = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -154,7 +154,7 @@
         {
             Navigation.NavigateTo("/Error");
         }
-        compra.Fecha_Compra = DateTime.Now;
+            compra.Fecha_Compra = DateTime.Now;
     }
 
 
@@ -167,17 +167,29 @@
             this.compra = compraEncontrado;
         }
     }
-    public async Task Guardar()
+    public async Task Modificar()
     {
-        var guardo = await compraservice.Guardar(compra);
-        if (guardo)
+        if (await Validar())
+            return;
+        else
         {
-
-            await Task.Delay(3000);
-            Atras();
+            var compraModificado = await compraservice.Guardar(compra);
+            if (compraModificado)
+            {
+                Atras();
+            }
+           
         }
-
     }
+
+    public async Task<bool> Validar()
+    {
+        Existe = (await compraservice.Listar(m => m.NFC!.ToLower() == compra.NFC!.ToLower()
+           && m.CompraId != compra.CompraId)).Any();
+
+        return Existe;
+    }
+
     void Atras()
     {
         Navigation.NavigateTo("/compras");
