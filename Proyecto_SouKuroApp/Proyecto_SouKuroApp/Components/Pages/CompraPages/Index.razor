@@ -90,7 +90,7 @@
                         <td class="text-center">@item.SubTotal</td>
                         <td class="text-center">@item.Total</td>
                         <td>
-                            <a href="/Delete/@item.CompraId" class="btn btn-danger bi bi-trash-fill">Delete</a>
+                            <a href="/deleteCompra/@item.CompraId" class="btn btn-danger bi bi-trash-fill">Delete</a>
                             <a href="/comprasEdit/@item.CompraId" class="btn btn-primary bi-box-arrow-up-right">Edit</a>
                             <a href="/Details/@item.CompraId" class="btn btn-success bi-box-arrow-up-right">Detalles</a>
 
@@ -112,7 +112,7 @@
     public Compra compra { get; set; } = new Compra();
     public List<Compra> ListaCompras { get; set; } = new List<Compra>();
     public int Opcion = 0;
-    public string Nombre { get; set; }
+   
 
     public int ClientesId { get; set; }
 
