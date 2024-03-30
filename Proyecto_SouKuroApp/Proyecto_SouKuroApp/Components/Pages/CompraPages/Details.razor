@@ -1,0 +1,102 @@
+﻿@page "/detailsCompra"
+@page "/detailsCompra/{CompraId:int}"
+@inject CompraServices compraservice
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@using Shared.Models
+
+<div class="card">
+    <div class="card-header bg-danger text-light">
+        <h1 class="mb-0">Detalle</h1>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Detalles de la Compra</h5>
+        <dl class="row">
+            <dt class="col-sm-3">CompraId:</dt>
+            <dd class="col-sm-9">@compra.CompraId</dd>
+
+            <dt class="col-sm-3">Fecha de compra</dt>
+            <dd class="col-sm-9">@compra.Fecha_Compra.ToString("dd/MM/yyyy")</dd>
+
+
+            <dt class="col-sm-3">NFC:</dt>
+            <dd class="col-sm-9">@compra.NFC</dd>
+
+            <dt class="col-sm-3">T&eacute;lefono:</dt>
+            <dd class="col-sm-9">@compra.Telefono</dd>
+
+            <dt class="col-sm-3">Cantidad:</dt>
+            <dd class="col-sm-9">@compra.Cantidad</dd>
+
+            <dt class="col-sm-3">SubTotal:</dt>
+            <dd class="col-sm-9">@compra.SubTotal</dd>
+
+            <dt class="col-sm-3">ITBIS:</dt>
+            <dd class="col-sm-9">@compra.ITBIS</dd>
+
+            <dt class="col-sm-3">Total:</dt>
+            <dd class="col-sm-9">@compra.Total</dd>
+
+
+        </dl>
+    </div>
+
+    <table class='table table-bordered table-hover'>
+        <thead>
+            <tr>
+
+                <th>Nombre Producto</th>
+                <th>Cantidad</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detalle in listaDetalles)
+            {
+
+                <tr>
+
+                    <td>@detalle.Nombre_Producto</td>
+                    <td>@detalle.Cantidad_Prod</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="card-footer">
+        <a href="/compras" class="btn btn-outline-primary bi bi bi-arrow-return-left"> Volver</a>
+        
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int CompraId { get; set; }
+
+    public Compra compra { get; set; } = new Compra();
+
+    public Compras_Detalles Detalles { get; set; } = new Compras_Detalles();
+    public List<Compras_Detalles> listaDetalles = new List<Compras_Detalles>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(500);
+        compra = await compraservice.GetCompras(CompraId);
+        if (compra != null)
+        {
+            listaDetalles = compra.Detalle.ToList();
+        }
+    }
+    public async Task Buscar()
+    {
+        var compraEncontrado = await compraservice.Buscar(compra.CompraId);
+
+        if (compraEncontrado != null)
+        {
+            this.compra = compraEncontrado;
+        }
+    }
+
+   
+
+   
+}
