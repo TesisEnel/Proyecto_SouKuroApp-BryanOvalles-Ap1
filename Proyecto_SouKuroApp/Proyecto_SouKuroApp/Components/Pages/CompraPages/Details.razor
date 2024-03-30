@@ -79,12 +79,23 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Delay(500);
+        await Task.Delay(500); // Espera opcional, si es necesario
+
         compra = await compraservice.GetCompras(CompraId);
+
         if (compra != null)
         {
-            listaDetalles = compra.Detalle.ToList();
+            if (compra.Detalle != null)
+            {
+                listaDetalles = compra.Detalle.ToList();
+            }
+            else
+            {
+                listaDetalles = new List<Compras_Detalles>();
+            }
         }
+
+        Detalles = new Compras_Detalles(); // Inicializar Detalles
     }
     public async Task Buscar()
     {

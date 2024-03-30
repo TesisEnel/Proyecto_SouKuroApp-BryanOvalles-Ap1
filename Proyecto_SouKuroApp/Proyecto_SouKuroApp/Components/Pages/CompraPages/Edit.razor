@@ -138,6 +138,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+       
         if (CompraId > 0)
         {
             compra = await compraservice.GetCompras(CompraId);
@@ -150,15 +151,14 @@
                 Navigation.NavigateTo("/Error");
             }
         }
-        else
-        {
-            Navigation.NavigateTo("/Error");
-        }
             compra.Fecha_Compra = DateTime.Now;
+
+        // Inicializar Detalles
+        Detalles = new Compras_Detalles();
     }
 
 
-    public async Task Buscar()
+   /* public async Task Buscar()
     {
         var compraEncontrado = await compraservice.Buscar(compra.CompraId);
 
@@ -166,29 +166,27 @@
         {
             this.compra = compraEncontrado;
         }
-    }
+    }*/
     public async Task Modificar()
     {
-        if (await Validar())
-            return;
-        else
+        var guardo = await compraservice.Modificar(compra);
+        if (guardo)
         {
-            var compraModificado = await compraservice.Guardar(compra);
-            if (compraModificado)
-            {
-                Atras();
-            }
            
+
+            await Task.Delay(500);
+            Navigation.NavigateTo("/compras");
         }
+  
     }
 
-    public async Task<bool> Validar()
+   /* public async Task<bool> Validar()
     {
         Existe = (await compraservice.Listar(m => m.NFC!.ToLower() == compra.NFC!.ToLower()
            && m.CompraId != compra.CompraId)).Any();
 
         return Existe;
-    }
+    }*/
 
     void Atras()
     {
@@ -212,7 +210,7 @@
     {
 
         compra.Cantidad -= Detalles.Cantidad_Prod;
-        Detalles = details;
+        compra.Detalle.Remove(details);
         listaDetalles.Remove(details);
     }
 }

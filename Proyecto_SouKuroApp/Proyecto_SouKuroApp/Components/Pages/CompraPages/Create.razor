@@ -126,11 +126,24 @@
     {
         if (CompraId > 0)
         {
-            this.compra.CompraId = CompraId;
-            await this.Buscar();
+            this.compra = await compraservice.GetCompras(CompraId);
+            if (this.compra != null)
+            {
+                await this.Buscar();
+            }
+            else
+            {
+                Navigation.NavigateTo("/Error");
+            }
         }
 
         compra.Fecha_Compra = DateTime.Now;
+
+        // Inicializar los detalles de la compra si es necesario
+        if (compra.Detalle == null)
+        {
+            compra.Detalle = new List<Compras_Detalles>();
+        }
     }
 
 
