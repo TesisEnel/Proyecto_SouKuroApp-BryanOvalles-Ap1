@@ -21,11 +21,14 @@ namespace Proyecto_SouKuroApp.Services
             _contexto.compras.Add(compras);
             return await _contexto.SaveChangesAsync() > 0;
         }
+
+        public async Task<Compra?> GetCompras(int id)
+        {
+            return await _contexto.compras.Include(c => c.Detalle).FirstOrDefaultAsync(c => c.CompraId == id);
+        }
         public async Task<bool> Modificar(Compra compra)
         {
-            var c = await _contexto.compras.FindAsync(compra.CompraId);
-            _contexto.Entry(c!).State = EntityState.Detached;
-            _contexto.Entry(compra).State = EntityState.Modified;
+            _contexto.compras.Update(compra);
             return await _contexto.SaveChangesAsync() > 0;
         }
         public async Task<bool> Guardar(Compra compra)
@@ -37,9 +40,7 @@ namespace Proyecto_SouKuroApp.Services
         }
         public async Task<bool> Eliminar(Compra compra)
         {
-            var c = await _contexto.compras.FindAsync(compra.CompraId);
-            _contexto.Entry(c!).State = EntityState.Detached;
-            _contexto.Entry(compra).State = EntityState.Deleted;
+            _contexto.compras.Remove(compra);
             return await _contexto.SaveChangesAsync() > 0;
         }
         public async Task<Compra?> Buscar(int CompraId)
