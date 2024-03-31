@@ -1,0 +1,82 @@
+﻿@page "/ventaEdit"
+@page "/ventaEdit/{VentaId:int}"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject VentaServices ventaservice
+@using Shared.Models;
+
+<h4>Venta</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="venta" OnValidSubmit="Modificar" FormName="ventaEdit" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+            <div class="mb-3">
+                <label for="VentaId" class="form-label">VentaId:</label>
+                <InputNumber id="VentaId" @bind-Value="venta.VentaId" class="form-control" />
+                <ValidationMessage For="() => venta.VentaId" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="NombreCliente" class="form-label">NombreCliente:</label>
+                <InputText id="NombreCliente" @bind-Value="venta.NombreCliente" class="form-control" />
+                <ValidationMessage For="() => venta.NombreCliente" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="fecha" class="form-label">Fecha:</label>
+                <InputDate id="fecha" @bind-Value="venta.Fecha" class="form-control" />
+                <ValidationMessage For="() => venta.Fecha" class="text-danger" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create</button>
+
+
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/venta">Back to List</a>
+</div>
+
+>
+
+@code {
+    [Parameter]
+    public int VentaId { get; set; }
+    public Venta venta { get; set; } = new Venta();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        if (VentaId > 0)
+        {
+            venta = await ventaservice.Buscar(VentaId);
+        }
+    }
+
+
+
+    public async Task Modificar()
+    {
+        var guardo = await ventaservice.Modificar(venta);
+        if (guardo)
+        {
+
+
+            await Task.Delay(500);
+            Navigation.NavigateTo("/venta");
+        }
+
+    }
+
+
+
+    void Atras()
+    {
+        Navigation.NavigateTo("/venta");
+    }
+}
+
+
