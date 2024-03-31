@@ -10,51 +10,62 @@
 
 <h4>Compra</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <EditForm method="post" Model="compra" OnValidSubmit="Guardar" FormName="create" Enhance>
-            <DataAnnotationsValidator />
-            <ValidationSummary class="text-danger" />
-            <div class="mb-3">
-                <label for="fecha_compra" class="form-label">Fecha_Compra:</label> 
-                <InputDate id="fecha_compra" @bind-Value="compra.Fecha_Compra" class="form-control" /> 
-                <ValidationMessage For="() => compra.Fecha_Compra" class="text-danger" />
-            </div>        
-            <div class="mb-3">
-                <label for="nfc" class="form-label">NFC:</label> 
-                <InputText id="nfc" @bind-Value="compra.NFC" class="form-control" />
-                <ValidationMessage For="() => compra.NFC" class="text-danger" />
-            </div>        
-            <div class="mb-3">
-                <label for="no_compra" class="form-label">No_Compra:</label> 
-                <InputNumber id="no_compra" @bind-Value="compra.No_Compra" class="form-control" />
-                <ValidationMessage For="() => compra.No_Compra" class="text-danger" />
-            </div>        
-            <div class="mb-3">
-                <label for="telefono" class="form-label">Telefono:</label> 
-                <InputText id="telefono" @bind-Value="compra.Telefono" class="form-control" />
-                <ValidationMessage For="() => compra.Telefono" class="text-danger" />
-            </div>        
-            <div class="mb-3">
-                <label for="cantidad" class="form-label">Cantidad:</label> 
-                <InputNumber id="cantidad" @bind-Value="compra.Cantidad" class="form-control" readonly />
-                <ValidationMessage For="() => compra.Cantidad" class="text-danger" />
-            </div>        
-            <div class="mb-3">
-                <label for="subtotal" class="form-label">SubTotal:</label> 
-                <InputNumber id="subtotal" @bind-Value="compra.SubTotal" class="form-control" />
-                <ValidationMessage For="() => compra.SubTotal" class="text-danger" />
-            </div>        
-            <div class="mb-3">
-                <label for="itbis" class="form-label">ITBIS:</label> 
-                <InputNumber id="itbis" @bind-Value="compra.ITBIS" class="form-control" />
-                <ValidationMessage For="() => compra.ITBIS" class="text-danger" />
-            </div>        
-            <div class="mb-3">
-                <label for="total" class="form-label">Total:</label> 
-                <InputNumber id="total" @bind-Value="compra.Total" class="form-control" />
-                <ValidationMessage For="() => compra.Total" class="text-danger" />
-            </div>        
+@*<div class="row">
+    <div class="col-md-4">*@
+        <EditForm  Model="compra" OnValidSubmit="Guardar" >
+           <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h1>Editar Compra </h1>
+        </div>
+        <div class=" card-body">
+            <label>CompraId</label>
+
+            <div class="input-group">
+                <InputNumber min="0" @bind-Value="compra.CompraId" class="id-input"></InputNumber>
+            </div>
+            <div>
+                <label>Fecha de compra:</label>
+                <InputDate @bind-Value="compra.Fecha_Compra" class="form-control"></InputDate>
+                <ValidationMessage For="@(() => compra.Fecha_Compra)" />
+            </div>
+
+            <div>
+                <label>NFC:</label>
+                <InputText @bind-Value="compra.NFC" class="form-control"></InputText>
+                <ValidationMessage For="@(() => compra.NFC)" />
+            </div>
+            <div>
+                <label>NO_Compra:</label>
+                <InputNumber @bind-Value="compra.No_Compra" class="form-control"></InputNumber>
+                <ValidationMessage For="@(() => compra.No_Compra)" />
+            </div>
+            <div>
+                <label>Telefono:</label>
+                <InputText @bind-Value="compra.Telefono" class="form-control" readonly></InputText>
+                <ValidationMessage For="@(() => compra.Telefono)" />
+            </div>
+            <div>
+                <label>Cantidad:</label>
+                <InputNumber @bind-Value="compra.Cantidad" class="form-control" readonly></InputNumber>
+                <ValidationMessage For="@(() => compra.Cantidad)" />
+            </div>
+            <div>
+                <label>SubTotal:</label>
+                <InputNumber @bind-Value="compra.SubTotal" class="form-control" ></InputNumber>
+                <ValidationMessage For="@(() => compra.SubTotal)" />
+            </div>
+            <div>
+                <label>ITEBIS:</label>
+                <InputNumber @bind-Value="compra.ITBIS" class="form-control"></InputNumber>
+                <ValidationMessage For="@(() => compra.ITBIS)" />
+            </div>
+            <div>
+                <label>Total:</label>
+                <InputNumber @bind-Value="compra.Total" class="form-control"></InputNumber>
+                <ValidationMessage For="@(() => compra.Total)" />
+            </div>
+        </div>       
             <button type="submit" class="btn btn-primary">Create</button>
 
             @*Detalles:*@
@@ -104,9 +115,10 @@
                     </tbody>
                 </table>
             </div>
+        </div>
         </EditForm>
-    </div>
-</div>
+
+
 
 <div>
     <a href="/compras">Back to List</a>
