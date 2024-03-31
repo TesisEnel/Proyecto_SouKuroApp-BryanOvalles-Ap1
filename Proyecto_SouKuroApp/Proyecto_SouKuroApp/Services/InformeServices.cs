@@ -7,19 +7,25 @@ namespace Proyecto_SouKuroApp.Services
 {
     public class InformeServices
     {
+
         private readonly ApplicationDbContext _contexto;
         public InformeServices(ApplicationDbContext contexto)
         {
             _contexto = contexto;
         }
-        public async Task<bool> Existe(int informeId)
+        public async Task<bool> Existe(int InformeId)
         {
-            return await _contexto.Informes.AnyAsync(c => c.InformeId == informeId);
+            return await _contexto.Informes.AnyAsync(c => c.InformeId == InformeId);
         }
+        /* public async Task<Usuario?> GetCompras(int id)
+         {
+             return await _contexto.usuarios.Include(c => c.Detalle).FirstOrDefaultAsync(c => c.CompraId == id);
+         }*/
         public async Task<bool> Insertar(Informe informe)
         {
             _contexto.Informes.Add(informe);
-            return await _contexto.SaveChangesAsync() > 0;
+            int filasAfectadas = await _contexto.SaveChangesAsync();
+            return filasAfectadas > 0;
         }
         public async Task<bool> Modificar(Informe informe)
         {
@@ -42,12 +48,13 @@ namespace Proyecto_SouKuroApp.Services
             _contexto.Entry(informe).State = EntityState.Deleted;
             return await _contexto.SaveChangesAsync() > 0;
         }
-        public async Task<Informe?> Buscar(int InformeId)
+        public async Task<Informe?> Buscar(int informe)
         {
             return await _contexto.Informes
-                .Where(c => c.InformeId == InformeId)
+                .Where(c => c.InformeId == informe)
                 .AsNoTracking()
                 .SingleOrDefaultAsync();
+            //.Include(c => c.ComprasDetalle)
         }
         public async Task<List<Informe>> Listar(Expression<Func<Informe, bool>> Criterio)
         {
