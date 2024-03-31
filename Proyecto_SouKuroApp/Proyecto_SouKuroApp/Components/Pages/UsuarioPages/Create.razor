@@ -10,9 +10,8 @@
 
 <h4>Usuario</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <EditForm method="post" Model="usuario" OnValidSubmit="Guardar" FormName="usuarioCreate" Enhance>
+
+        <EditForm  Model="usuario" OnValidSubmit="Guardar" >
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
@@ -39,8 +38,7 @@
 
      
         </EditForm>
-    </div>
-</div>
+
 
 <div>
     <a href="/usuario">Back to List</a>
