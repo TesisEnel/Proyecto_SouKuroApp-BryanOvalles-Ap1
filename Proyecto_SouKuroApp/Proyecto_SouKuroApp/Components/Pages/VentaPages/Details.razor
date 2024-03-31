@@ -1,0 +1,58 @@
+﻿@page "/detailsVenta"
+@page "/detailsVenta/{VentaId:int}"
+@inject VentaServices ventaservices
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@using Shared.Models
+
+
+<div class="card">
+    
+    <div class="card-body">
+        <h5 class="card-title">Detalles de la Venta</h5>
+        <dl class="row">
+            <dt class="col-sm-3">VentaId:</dt>
+            <dd class="col-sm-9">@venta.VentaId</dd>
+
+            <dt class="col-sm-3">Nombre Cliente</dt>
+            <dd class="col-sm-9">@venta.NombreCliente</dd>
+
+
+            <dt class="col-sm-3">Fecha:</dt>
+            <dd class="col-sm-9">@venta.Fecha</dd>
+
+
+
+
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a href="/venta" class="btn btn-outline-primary bi bi bi-arrow-return-left"> Volver</a>
+       
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int VentaId { get; set; }
+
+    public Venta venta { get; set; } = new Venta();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        venta = await ventaservices.Buscar(VentaId);
+
+
+
+    }
+
+    void Atras()
+    {
+        Navigation.NavigateTo("/venta");
+    }
+}
+   
+
+   
