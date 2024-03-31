@@ -1,0 +1,62 @@
+﻿@page "/detailsInforme"
+@page "/detailsInforme/{InformeId:int}"
+@inject InformeServices informeservices
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@using Shared.Models
+
+
+<div class="card">
+    
+    <div class="card-body">
+        <h5 class="card-title">Detalles del Informe</h5>
+        <dl class="row">
+            <dt class="col-sm-3">InformeId:</dt>
+            <dd class="col-sm-9">@informe.InformeId</dd>
+
+            <dt class="col-sm-3">Nombre Usuario</dt>
+            <dd class="col-sm-9">@informe.Fecha_Inicio</dd>
+
+
+            <dt class="col-sm-3">Contrasena:</dt>
+            <dd class="col-sm-9">@informe.Fecha_Final</dd>
+
+            <dt class="col-sm-3">Rol:</dt>
+            <dd class="col-sm-9">@informe.Gastado</dd>
+
+
+
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a href="/informe" class="btn btn-outline-primary bi bi bi-arrow-return-left"> Volver</a>
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int InformeId { get; set; }
+
+    public Informe informe { get; set; } = new Informe();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        informe = await informeservices.Buscar(InformeId);
+
+
+
+    }
+
+
+   
+    
+
+    void Atras()
+    {
+        Navigation.NavigateTo("/informe");
+    }
+
+}
