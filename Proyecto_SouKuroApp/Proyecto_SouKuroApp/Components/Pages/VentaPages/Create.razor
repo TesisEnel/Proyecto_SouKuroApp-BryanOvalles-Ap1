@@ -10,8 +10,9 @@
 
 <h4>Venta</h4>
 <hr />
-
-        <EditForm  Model="venta" OnValidSubmit="Guardar" >
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="venta" OnValidSubmit="Guardar" FormName="ventaCreate" Enhance>
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
@@ -34,6 +35,8 @@
 
 
         </EditForm>
+    </div>
+</div>
 
 <div>
     <a href="/venta">Back to List</a>
