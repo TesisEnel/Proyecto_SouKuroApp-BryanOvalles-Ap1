@@ -32,6 +32,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<CompraServices>();
 builder.Services.AddScoped<UsuariosServices>();
 builder.Services.AddScoped<InformeServices>();
+builder.Services.AddScoped<VentaServices>();
 builder.Services.AddQuickGridEntityFrameworkAdapter();;
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
