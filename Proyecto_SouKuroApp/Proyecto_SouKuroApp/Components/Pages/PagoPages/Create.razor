@@ -1,0 +1,94 @@
+﻿@page "/pagoCreate"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject PagosServices pagosService
+@using Shared.Models;
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h4>Pago</h4>
+<hr />
+
+<EditForm Model="pago" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator />
+	<ValidationSummary class="text-danger" />
+	<div class="mb-3">
+		<label for="pagoId" class="form-label">PagoId:</label>
+		<label id="pagoId" class="form-control">@pago.PagoId</label>
+		<ValidationMessage For="() => pago.PagoId" class="text-danger" />
+	</div>
+	<div class="mb-3">
+		<label for="fecha" class="form-label">Fecha:</label>
+		<InputDate id="fecha" @bind-Value="pago.Fecha_Pago" class="form-control" />
+		<ValidationMessage For="() => pago.Fecha_Pago" class="text-danger" />
+	</div>
+	<div class="mb-3">
+		<label for="monto" class="form-label">Monto:</label>
+		<InputNumber id="monto" @bind-Value="pago.Monto" class="form-control" />
+		<ValidationMessage For="() => pago.Monto" class="text-danger" />
+	</div>
+	<div class="mb-3">
+		<label for="metodo" class="form-label">Metodo:</label>
+		<InputText id="metodo" @bind-Value="pago.Metodo" class="form-control" />
+		<ValidationMessage For="() => pago.Metodo" class="text-danger" />
+	</div>
+	<div class="mb-3">
+		<label for="estado" class="form-label">Estado:</label>
+		<InputText id="estado" @bind-Value="pago.Estado" class="form-control" />
+		<ValidationMessage For="() => pago.Estado" class="text-danger" />
+	</div>
+
+	<div class="card-footer">
+		<a href="/pago" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+		<button type="submit" class="btn btn-primary">Crear</button>
+	</div>
+</EditForm>
+
+@code {
+	[Parameter]
+	public int PagoId { get; set; }
+	public Pago pago { get; set; } = new Pago();
+	public string Mensaje = " ";
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (PagoId > 0)
+		{
+			this.pago = await pagosService.Buscar(PagoId);
+			if (this.pago != null)
+			{
+				await this.Buscar();
+			}
+			else
+			{
+				Navigation.NavigateTo("/Error");
+			}
+		}
+	}
+
+	public async Task Buscar()
+	{
+		var pagoEncontrado = await pagosService.Buscar(pago.PagoId);
+
+		if (pagoEncontrado != null)
+		{
+			this.pago = pagoEncontrado;
+		}
+	}
+	public async Task Guardar()
+	{
+		var guardo = await pagosService.Guardar(pago);
+		if (guardo)
+		{
+			await Task.Delay(3000);
+			Atras();
+		}
+
+	}
+	void Atras()
+	{
+		Navigation.NavigateTo("/pago");
+	}
+}

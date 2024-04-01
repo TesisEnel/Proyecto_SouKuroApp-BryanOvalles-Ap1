@@ -1,0 +1,50 @@
+﻿@page "/detailsPago"
+@page "/detailsPago/{PagoId:int}"
+@inject PagosServices pagosServices
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@using Shared.Models
+
+<div class="card">
+    
+    <div class="card-body">
+        <h5 class="card-title">Detalles del Pago</h5>
+        <dl class="row">
+            <dt class="col-sm-3">PagoId:</dt>
+            <dd class="col-sm-9">@pago.PagoId</dd>
+            
+            <dt class="col-sm-3">Fecha:</dt>
+            <dd class="col-sm-9">@pago.Fecha_Pago</dd>
+
+            <dt class="col-sm-3">Monto:</dt>
+            <dd class="col-sm-9">@pago.Monto</dd>
+            
+            <dt class="col-sm-3">Metodo:</dt>
+            <dd class="col-sm-9">@pago.Metodo</dd>
+            
+            <dt class="col-sm-3">Estado:</dt>
+            <dd class="col-sm-9">@pago.Estado</dd>
+
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a href="/pago" class="btn btn-outline-primary bi bi bi-arrow-return-left"> Volver</a>
+       
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int PagoId { get; set; }
+    public Pago pago { get; set; } = new Pago();
+
+    protected override async Task OnInitializedAsync()
+    {
+        pago = await pagosServices.Buscar(PagoId);
+    }
+
+    void Atras()
+    {
+        Navigation.NavigateTo("/pago");
+    }
+}

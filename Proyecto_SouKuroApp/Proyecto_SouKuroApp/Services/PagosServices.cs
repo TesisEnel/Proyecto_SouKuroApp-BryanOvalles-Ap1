@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.EntityFrameworkCore;
 using Proyecto_SouKuroApp.Data;
 using Shared.Models;
 using System.Linq.Expressions;
@@ -19,7 +20,8 @@ namespace Proyecto_SouKuroApp.Services
         public async Task<bool> Insertar(Pago pago)
         {
             _contexto.pagos.Add(pago);
-            return await _contexto.SaveChangesAsync() > 0;
+            int filasAfectadas = await _contexto.SaveChangesAsync();
+            return filasAfectadas > 0;
         }
         public async Task<bool> Modificar(Pago pago)
         {

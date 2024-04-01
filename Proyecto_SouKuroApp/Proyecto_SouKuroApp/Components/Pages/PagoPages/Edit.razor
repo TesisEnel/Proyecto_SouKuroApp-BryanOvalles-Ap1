@@ -1,0 +1,77 @@
+﻿@page "/pagoEdit"
+@page "/pagoEdit/{PagoId:int}"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject PagosServices pagosService
+@using Shared.Models;
+
+<h4>Pagos</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="pago" OnValidSubmit="Modificar" FormName="pagoEdit" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+            <div class="mb-3">
+                <label for="pedidoId" class="form-label">PedidoId:</label>
+                <label id="pedidoId" class="form-control">@pago.PagoId</label>
+                <ValidationMessage For="() => pago.PagoId" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="fecha" class="form-label">Fecha Pedida:</label>
+                <InputDate id="fecha" @bind-Value="pago.Fecha_Pago" class="form-control" />
+                <ValidationMessage For="() => pago.Fecha_Pago" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="monto" class="form-label">Monto:</label>
+                <InputNumber id="monto" @bind-Value="pago.Monto" class="form-control" />
+                <ValidationMessage For="() => pago.Monto" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="metodo" class="form-label">Metodo:</label>
+                <InputText id="metodo" @bind-Value="pago.Metodo" class="form-control" />
+                <ValidationMessage For="() => pago.Metodo" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="estado" class="form-label">Estado:</label>
+                <InputText id="estado" @bind-Value="pago.Estado" class="form-control" />
+                <ValidationMessage For="() => pago.Estado" class="text-danger" />
+            </div>
+
+            <div class="card-footer">
+                <a href="/pago" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+                <button type="submit" class="btn btn-primary">Modificar</button>
+            </div>
+
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int PagoId { get; set; }
+    public Pago pago { get; set; } = new Pago();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (PagoId > 0)
+        {
+            pago = await pagosService.Buscar(PagoId);
+        }
+    }
+
+    public async Task Modificar()
+    {
+        var guardo = await pagosService.Modificar(pago);
+        if (guardo)
+        {
+            await Task.Delay(500);
+            Atras();
+        }
+    }
+
+    void Atras()
+    {
+        Navigation.NavigateTo("/pago");
+    }
+}

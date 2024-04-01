@@ -1,0 +1,135 @@
+﻿@page "/pago"
+@page "/pago/{PagoId:int}"
+@using Microsoft.AspNetCore.Authorization
+@using Shared.Models
+@attribute [Authorize]
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject PagosServices pagosServices
+
+
+<div class="card">
+    <div class="card-header">
+        <h3>Pago</h3>
+        <a href="/pagoCreate" class="btn btn-outline-primary bi bi-plus-square">  Crear</a>
+    </div>
+
+    <div class="card-body">
+
+        <div class="input-group-text">
+
+            <label class="form-control-label col-1">Desde:</label>
+            <div class="col-3">
+                <input class="form-control" type="date" @bind="Desde" />
+            </div>
+
+            <label class="form-control-label col-1">Hasta:</label>
+            <div class="col-3">
+                <input class="form-control" type="date" @bind="Hasta" />
+            </div>
+
+            <div class="col-5">
+                <button type="button" @onclick="Buscar" class="btn btn-primary  ">
+                    <i class="bi bi-search" />
+                    <br /> Buscar
+                </button>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-3">
+                <label>Filtrar Por</label>
+                <InputSelect @bind-Value="Opcion" class="form-select">
+                    <option value="0" selected disabled>Seleccione</option>
+                    <option value="1">PagoId</option>
+                   
+                </InputSelect>
+            </div>
+
+            @if (Opcion == 1)
+            {
+                <div class="col-3">
+                    <label>ID</label>
+                    <div class="input-group">
+                        <InputNumber @bind-Value="PagoId" class="form-control"></InputNumber>
+                    </div>
+                </div>
+            }
+
+      
+
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">PagoId</th>
+                    <th scope="col" class="text-center">Fecha del Pago</th>
+                    <th scope="col" class="text-center">Monto</th>
+                    <th scope="col" class="text-center">Metodo</th>
+                    <th scope="col" class="text-center">Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in listaPago)
+                {
+                    <tr>
+                        <td class="text-center">@item.PagoId</td>
+                        <td class="text-center">@item.Fecha_Pago</td>
+                        <td class="text-center">@item.Monto</td>
+                        <td class="text-center">@item.Metodo</td>
+                        <td class="text-center">@item.Estado</td>
+
+                        <td>
+                            <a href="/deletePago/@item.PagoId" class="btn btn-danger bi bi-trash-fill">Borrar</a>
+                            <a href="/pagoEdit/@item.PagoId" class="btn btn-primary bi-box-arrow-up-right">Editar</a>
+                            <a href="/detailsPago/@item.PagoId" class="btn btn-success bi-box-arrow-up-right">Detalles</a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+    <div class="card-footer">
+        <a href="/" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int PagoId { get; set; }
+    public Pago pago { get; set; } = new Pago();
+    public List<Pago> listaPago { get; set; } = new List<Pago>();
+   
+    public int Opcion = 0;
+    public DateTime Desde { get; set; }
+    public DateTime Hasta { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        listaPago = await pagosServices.Listar(t => true);
+        Desde = DateTime.Now.AddMonths(-1);
+        Hasta = DateTime.Now;
+    }
+
+    public async Task Buscar()
+    {
+        Hasta = new DateTime(Hasta.Year, Hasta.Month, Hasta.Day, 23, 59, 59);
+        if (Opcion == 0)
+        {
+            listaPago = await pagosServices.Listar(t => t.Fecha_Pago >= Desde && t.Fecha_Pago <= Hasta);
+        }
+        if (Opcion == 1)
+        {
+            if (PagoId <= 0)
+                listaPago = await pagosServices.Listar(t => true);
+            else
+                listaPago = await pagosServices.Listar(t => t.PagoId == PagoId && t.Fecha_Pago >= Desde && t.Fecha_Pago <= Hasta);
+        }    
+    }
+}
