@@ -1,8 +1,12 @@
 ﻿@page "/deleteUsuario"
-@page "/deleteUsuario/{UsuarioId:int}"
+@page "/deleteUsuario/{Id}"
 @inject UsuariosServices usuarioservice
 @inject NavigationManager Navigation
+@inject UserManager<ApplicationUser> userManager
+@inject ApplicationDbContext context
 @rendermode InteractiveServer
+@using Microsoft.AspNetCore.Identity
+@using Proyecto_SouKuroApp.Data
 @using Shared.Models
 
 <div class="card">
@@ -12,18 +16,12 @@
     <div class="card-body">
         <h5 class="card-title">Detalles del Usuario</h5>
         <dl class="row">
-            <dt class="col-sm-3">UsuarioId:</dt>
-            <dd class="col-sm-9">@usuario.UsuarioId</dd>
-
-            <dt class="col-sm-3">Nombre Usuario</dt>
-            <dd class="col-sm-9">@usuario.Nombre_Usuario</dd>
+            
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@User.UserName</dd>
 
 
-            <dt class="col-sm-3">Contrasena:</dt>
-            <dd class="col-sm-9">@usuario.Contrasena</dd>
-
-            <dt class="col-sm-3">Rol:</dt>
-            <dd class="col-sm-9">@usuario.Rol</dd>
+         
 
            
 
@@ -38,32 +36,38 @@
 
 @code {
     [Parameter]
-    public int UsuarioId { get; set; }
-
+    public string Id { get; set; }
+    public ApplicationUser User { get; set; } = new ApplicationUser();
     public Usuario usuario { get; set; } = new Usuario();
 
-    
+
     protected override async Task OnInitializedAsync()
     {
 
-        usuario = await usuarioservice.Buscar(UsuarioId);
+        if (!Guid.TryParse(Id, out Guid userId))
+        {
+            // Manejar el caso en que el Id no sea un Guid válido
+            // Puedes mostrar un mensaje de error, por ejemplo
+            return;
+        }
 
-        
-
+        // Obtener el usuario por su Id
+        User = await userManager.FindByIdAsync(userId.ToString());
     }
-   
+
 
     public async Task Eliminar()
     {
-        if (!await usuarioservice.Existe(usuario.UsuarioId))
+        var userRemovido = await usuarioservice.Delete(User.Id);
+        if (!userRemovido)
         {
             return;
         }
-        if (await usuarioservice.Eliminar(this.usuario))
+        else
         {
-            Atras();
+            // Limpiar el usuario después de eliminarlo con éxito si es necesario
+            usuario = new Usuario();
         }
-
     }
 
     void Atras()
