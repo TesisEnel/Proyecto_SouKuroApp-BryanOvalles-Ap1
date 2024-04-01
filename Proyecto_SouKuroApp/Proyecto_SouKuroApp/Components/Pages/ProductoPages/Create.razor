@@ -1,0 +1,166 @@
+﻿@page "/producto/create"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject ProductoServices productoServices
+@using Shared.Models;
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h4>Producto</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<EditForm method="post" Model="producto" OnValidSubmit="Guardar" FormName="create" Enhance>
+			<DataAnnotationsValidator />
+			<ValidationSummary class="text-danger" />
+			<div class="mb-3">
+				<label for="productoId" class="form-label">ProductoId:</label>
+				<label id="productoId" class="form-control">@producto.ProcuctoId</label>
+				<ValidationMessage For="() => producto.ProcuctoId" class="text-danger" />
+
+			</div>
+			<div class="mb-3">
+				<label for="nombre" class="form-label">Nombre:</label>
+				<InputText id="nombre" @bind-Value="producto.Nombre" class="form-control" />
+				<ValidationMessage For="() => producto.Nombre" class="text-danger" />
+			</div>
+			<div class="mb-3">
+				<label for="precio" class="form-label">Precio:</label>
+				<InputNumber id="precio" @bind-Value="producto.Precio" class="form-control" />
+				<ValidationMessage For="() => producto.Precio" class="text-danger" />
+			</div>
+			<div class="mb-3">
+				<label for="stock" class="form-label">Stock:</label>
+				<InputNumber id="stock" @bind-Value="producto.Stock" class="form-control" />
+				<ValidationMessage For="() => producto.Stock" class="text-danger" />
+			</div>
+			<div class="mb-3">
+				<label for="descripcion" class="form-label">Descripci&oacute;n:</label>
+				<InputText id="descripcion" @bind-Value="producto.Descripcion" class="form-control" />
+				<ValidationMessage For="() => producto.Descripcion" class="text-danger" />
+			</div>
+			<button type="submit" class="btn btn-primary">Create</button>
+
+			<div class="card card-header mt-5">
+				<h3>Detalle de Compra</h3>
+
+				<div class="row">
+					<div class="col">
+						<label class="fw-bold mt-3">ProductoId</label>
+						<InputNumber @bind-Value="Detalles.ProductoId" class="form-control"></InputNumber>
+						<ValidationMessage For="@(() => Detalles.ProductoId)" />
+					</div>
+					<div class="col">
+						<label class="fw-bold mt-3">Categoria del Producto</label>
+						<InputText @bind-Value="Detalles.Categoria" class="form-control"></InputText>
+						<ValidationMessage For="@(() => Detalles.Categoria)" />
+					</div>
+				</div>
+				<div class="card-footer d-flex justify-content-center">
+					<button type="button" @onclick="AgregarDetalle" class="btn btn-outline-success">Agregar</button>
+				</div>
+				<table class='table table-bordered table-hover'>
+					<thead>
+						<tr>
+							<th>ProductoId</th>
+							<th>Categoria</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var detalle in listaDetalles)
+						{
+
+							<tr>
+								<td>@detalle.ProductoId</td>
+								<td>@detalle.Categoria</td>
+								<td><button type="button" class="btn btn-outline-danger bi bi-trash-fill" @onclick=@(() => RemoverDetalle(detalle))>Eliminar</button></td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</EditForm>
+	</div>
+</div>
+
+<div>
+	<a href="/producto">Back to List</a>
+</div>
+
+@code {
+
+	[Parameter]
+	public int ProductoId { get; set; }
+	public Producto producto { get; set; } = new Producto();
+	public string Mensaje = " ";
+	public Producto_Detalle Detalles { get; set; } = new Producto_Detalle();
+	public List<Producto_Detalle> listaDetalles = new List<Producto_Detalle>();
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (ProductoId > 0)
+		{
+			this.producto = await productoServices.Buscar(ProductoId);
+			if (this.producto != null)
+			{
+				await this.Buscar();
+			}
+			else
+			{
+				Navigation.NavigateTo("/Error");
+			}
+		}
+
+
+		// Inicializar los detalles de la compra si es necesario
+		if (producto.Detalle == null)
+		{
+			producto.Detalle = new List<Producto_Detalle>();
+		}
+	}
+
+
+	public async Task Buscar()
+	{
+		var compraEncontrado = await productoServices.Buscar(producto.ProcuctoId);
+
+		if (compraEncontrado != null)
+		{
+			this.producto = compraEncontrado;
+		}
+	}
+	public async Task Guardar()
+	{
+		var guardo = await productoServices.Guardar(producto);
+		if (guardo)
+		{
+			await Task.Delay(3000);
+			Atras();
+		}
+
+	}
+	void Atras()
+	{
+		Navigation.NavigateTo("/producto");
+	}
+
+	public async Task AgregarDetalle()
+	{
+		if (producto != null)
+		{
+			Detalles.ProductoId = producto.ProcuctoId;
+			listaDetalles.Add(Detalles);
+			producto.Detalle.Add(Detalles);
+		}
+	}
+
+	public async Task RemoverDetalle(Producto_Detalle details)
+	{
+		Detalles = details;
+		listaDetalles.Remove(details);
+	}
+}

@@ -33,6 +33,7 @@ builder.Services.AddScoped<CompraServices>();
 builder.Services.AddScoped<UsuariosServices>();
 builder.Services.AddScoped<InformeServices>();
 builder.Services.AddScoped<VentaServices>();
+builder.Services.AddScoped<ProductoServices>();
 builder.Services.AddQuickGridEntityFrameworkAdapter();;
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

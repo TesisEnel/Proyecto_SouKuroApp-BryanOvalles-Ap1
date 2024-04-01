@@ -1,0 +1,102 @@
+﻿@page "/deleteProducto"
+@page "/deleteProducto/{ProductoId:int}"
+@inject ProductoServices productoservice
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@using Shared.Models
+
+<div class="card">
+    <div class="card-header bg-danger text-light">
+        <h1 class="mb-0">¿Desea Eliminar este Compra?</h1>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Detalles de la Compra</h5>
+        <dl class="row">
+            <dt class="col-sm-3">ProductoId:</dt>
+            <dd class="col-sm-9">@producto.ProcuctoId</dd>
+
+            <dt class="col-sm-3">Nombre del Producto</dt>
+            <dd class="col-sm-9">@producto.Nombre</dd>
+
+            <dt class="col-sm-3">Costo:</dt>
+            <dd class="col-sm-9">@producto.Precio</dd>
+
+            <dt class="col-sm-3">Descripci&oacute;n:</dt>
+            <dd class="col-sm-9">@producto.Descripcion</dd>
+            
+        </dl>
+    </div>
+
+    <table class='table table-bordered table-hover'>
+        <thead>
+            <tr>
+
+                <th>ProductoId</th>
+                <th>Categoria</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detalle in listaDetalles)
+            {
+
+                <tr>
+
+                    <td>@detalle.ProductoId</td>
+                    <td>@detalle.Categoria</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="card-footer">
+        <a href="/producto" class="btn btn-outline-primary bi bi bi-arrow-return-left"> Volver</a>
+        <button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int ProductoId { get; set; }
+
+    public Producto producto { get; set; } = new Producto();
+
+    public Producto_Detalle Detalles { get; set; } = new Producto_Detalle();
+    public List<Producto_Detalle> listaDetalles = new List<Producto_Detalle>();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        producto = await productoservice.Buscar(ProductoId);
+
+        if (producto != null && producto.Detalle != null)
+        {
+            listaDetalles = producto.Detalle.ToList();
+        }
+        else
+        {
+            listaDetalles = new List<Producto_Detalle>();
+        }
+
+        Detalles = new Producto_Detalle(); // Inicializar Detalles
+
+    }
+
+    public async Task Eliminar()
+    {
+        if (!await productoservice.Existe(producto.ProcuctoId))
+        {
+            return;
+        }
+        if (await productoservice.Eliminar(this.producto))
+        {
+            Atras();
+        }
+       
+    }
+
+    void Atras()
+    {
+        Navigation.NavigateTo("/producto");
+    }
+}
