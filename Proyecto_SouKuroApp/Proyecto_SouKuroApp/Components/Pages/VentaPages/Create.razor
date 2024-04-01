@@ -29,16 +29,15 @@
                 <InputDate id="fecha" @bind-Value="venta.Fecha" class="form-control" />
                 <ValidationMessage For="() => venta.Fecha" class="text-danger" />
             </div>
-           
-            <button type="submit" class="btn btn-primary">Create</button>
 
-
+            <div class="card-footer">
+                  <a href="/venta" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+                  <button type="submit" class="btn btn-primary">Crear</button>
+            </div>
         </EditForm>
  
 
-<div>
-    <a href="/venta">Back to List</a>
-</div>
+
 
 
 @code {
