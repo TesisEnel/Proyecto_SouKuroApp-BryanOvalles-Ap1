@@ -23,9 +23,19 @@
             <ValidationSummary class="text-danger" />
             
             <div class="mb-3">
-                <label for="NombreUsuario" class="form-label">Email:</label>
-                <InputText id="NombreUsuario" @bind-Value="User.UserName" class="form-control" />
+                <label for="Usuario" class="form-label">Email:</label>
+                <InputText id="Usuario" @bind-Value="User.UserName" class="form-control" />
                 <ValidationMessage For="() => User.UserName" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="NombreUsuario" class="form-label">Nombre Usuario:</label>
+                <InputText id="NombreUsuario" @bind-Value="User.NombreUsuario" class="form-control" />
+                <ValidationMessage For="() => User.UserName" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="Fecha" class="form-label">Fecha Nacimiento:</label>
+                <InputDate id="Fecha" @bind-Value="User.FechaNacimiento" class="form-control" />
+                <ValidationMessage For="() => User.FechaNacimiento" class="text-danger" />
             </div>
     
             <div class="card-footer">
@@ -75,11 +85,12 @@
         }
         else
         {
-          
-        
+
+
             User = new ApplicationUser();
-            
+
         }
+        Atras();
     }
     void Atras()
     {
