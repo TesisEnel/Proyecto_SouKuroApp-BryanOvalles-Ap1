@@ -2,7 +2,7 @@
 @page "/informe/{InformeId:int}"
 @using Microsoft.AspNetCore.Authorization
 @using Shared.Models
-@attribute [Authorize]
+@attribute [Authorize(Roles ="Admin")]
 @rendermode InteractiveServer
 @inject NavigationManager Navigation
 @inject InformeServices informeservice
@@ -10,7 +10,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h3>Detalles de Informe</h3>
+        <h3>Informe</h3>
         <a href="/informeCreate" class="btn btn-outline-primary bi bi-plus-square">  Crear</a>
     </div>
 
