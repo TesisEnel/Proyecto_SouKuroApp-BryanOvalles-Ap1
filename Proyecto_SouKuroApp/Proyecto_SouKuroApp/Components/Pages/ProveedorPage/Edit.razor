@@ -1,0 +1,80 @@
+﻿@page "/proveedorEdit"
+@page "/proveedorEdit/{ProveedorId:int}"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject ProveedorServices proveedorService
+@using Shared.Models;
+<PageTitle>Modificar</PageTitle>
+
+<h1>Modificar</h1>
+
+<h4>Proveedor</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="proveedor" OnValidSubmit="Modificar" FormName="proveedorEdit" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+            <div class="mb-3">
+                <label for="proveedorId" class="form-label">ProveedorId:</label>
+                <label id="proveedorId" class="form-control">@proveedor.ProveedorId</label>
+                <ValidationMessage For="() => proveedor.ProveedorId" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="nombreProveedor" class="form-label">Nombre del Proveedor:</label>
+                <InputText id="nombreProveedor" @bind-Value="proveedor.Nombre" class="form-control" />
+                <ValidationMessage For="() => proveedor.Nombre" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="direccion" class="form-label">Direcci&oacute;n:</label>
+                <InputText id="direccion" @bind-Value="proveedor.Direccion" class="form-control" />
+                <ValidationMessage For="() => proveedor.Direccion" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <InputText id="email" @bind-Value="proveedor.Email" class="form-control" />
+                <ValidationMessage For="() => proveedor.Email" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="telefono" class="form-label">Telefono:</label>
+                <InputText id="telefono" @bind-Value="proveedor.Telefono" class="form-control" />
+                <ValidationMessage For="() => proveedor.Telefono" class="text-danger" />
+            </div>
+
+            <div class="card-footer">
+                <a href="/proveedor" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+                <button type="submit" class="btn btn-primary">Modificar</button>
+            </div>
+
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int ProveedorId { get; set; }
+    public Proveedor proveedor { get; set; } = new Proveedor();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ProveedorId > 0)
+        {
+            proveedor = await proveedorService.Buscar(ProveedorId);
+        }
+    }
+
+    public async Task Modificar()
+    {
+        var guardo = await proveedorService.Modificar(proveedor);
+        if (guardo)
+        {
+            await Task.Delay(500);
+            Atras();
+        }
+    }
+
+    void Atras()
+    {
+        Navigation.NavigateTo("/proveedor");
+    }
+}

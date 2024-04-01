@@ -1,0 +1,65 @@
+﻿@page "/deleteProveedor"
+@page "/deleteProveedor/{ProveedorId:int}"
+@inject ProveedorServices proveedorServices
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@using Shared.Models
+
+<div class="card">
+	<div class="card-header bg-danger text-light">
+		<h1 class="mb-0">¿Desea Eliminar este Proveedor?</h1>
+	</div>
+	<div class="card-body">
+		<h5 class="card-title">Detalles del Proveedor</h5>
+		<dl class="row">
+			<dt class="col-sm-3">ProveedorId:</dt>
+			<dd class="col-sm-9">@proveedor.ProveedorId</dd>
+
+			<dt class="col-sm-3">Nombre Proveedor</dt>
+			<dd class="col-sm-9">@proveedor.Nombre</dd>
+
+			<dt class="col-sm-3">Direcci&oacute;n:</dt>
+			<dd class="col-sm-9">@proveedor.Direccion</dd>
+
+			<dt class="col-sm-3">Email:</dt>
+			<dd class="col-sm-9">@proveedor.Email</dd>
+
+			<dt class="col-sm-3">Telefono:</dt>
+			<dd class="col-sm-9">@proveedor.Telefono</dd>
+
+		</dl>
+	</div>
+	<div class="card-footer">
+		<a href="/proveedor" class="btn btn-outline-primary bi bi bi-arrow-return-left"> Volver</a>
+		<button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
+
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public int ProveedorId { get; set; }
+	public Proveedor proveedor { get; set; } = new Proveedor();
+
+	protected override async Task OnInitializedAsync()
+	{
+		proveedor = await proveedorServices.Buscar(ProveedorId);
+	}
+
+	public async Task Eliminar()
+	{
+		if (!await proveedorServices.Existe(proveedor.ProveedorId))
+		{
+			return;
+		}
+		if (await proveedorServices.Eliminar(this.proveedor))
+		{
+			Atras();
+		}
+	}
+
+	void Atras()
+	{
+		Navigation.NavigateTo("/proveedor");
+	}
+}

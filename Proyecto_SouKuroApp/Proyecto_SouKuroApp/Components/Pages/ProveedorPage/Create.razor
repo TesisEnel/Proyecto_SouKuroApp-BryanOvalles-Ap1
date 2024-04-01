@@ -1,0 +1,98 @@
+﻿@page "/proveedorCreate"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject ProveedorServices proveedorServices
+@using Shared.Models;
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h4>Proveedor</h4>
+<hr />
+
+<EditForm Model="proveedor" OnValidSubmit="Guardar" FormName="proveedoCreate">
+	<DataAnnotationsValidator />
+	<ValidationSummary class="text-danger" />
+	<div class="mb-3">
+		<label for="proveedorId" class="form-label">ProveedorId:</label>
+		<label id="proveedorId" class="form-control">@proveedor.ProveedorId</label>
+		<ValidationMessage For="() => proveedor.ProveedorId" class="text-danger" />
+	</div>
+	<div class="mb-3">
+		<label for="nombreProveedor" class="form-label">Nombre del Proveedor:</label>
+		<InputText id="nombreProveedor" @bind-Value="proveedor.Nombre" class="form-control" />
+		<ValidationMessage For="() => proveedor.Nombre" class="text-danger" />
+	</div>
+	<div class="mb-3">
+		<label for="direccion" class="form-label">Direcci&oacute;n:</label>
+		<InputText id="direccion" @bind-Value="proveedor.Direccion" class="form-control" />
+		<ValidationMessage For="() => proveedor.Direccion" class="text-danger" />
+	</div>
+	<div class="mb-3">
+		<label for="email" class="form-label">Email:</label>
+		<InputText id="email" @bind-Value="proveedor.Email" class="form-control" />
+		<ValidationMessage For="() => proveedor.Email" class="text-danger" />
+	</div>
+	<div class="mb-3">
+		<label for="telefono" class="form-label">Telefono:</label>
+		<InputText id="telefono" @bind-Value="proveedor.Telefono" class="form-control" />
+		<ValidationMessage For="() => proveedor.Telefono" class="text-danger" />
+	</div>
+
+	<div class="card-footer">
+		<a href="/proveedor" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+		<button type="submit" class="btn btn-primary">Crear</button>
+	</div>
+
+</EditForm>
+
+<div>
+	<a href="/proveedor">Back to List</a>
+</div>
+
+@code {
+	[Parameter]
+	public int ProveedorId { get; set; }
+	public Proveedor proveedor { get; set; } = new Proveedor();
+	public string Mensaje = " ";
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (ProveedorId > 0)
+		{
+			this.proveedor = await proveedorServices.Buscar(ProveedorId);
+			if (this.proveedor != null)
+			{
+				await this.Buscar();
+			}
+			else
+			{
+				Navigation.NavigateTo("/Error");
+			}
+		}
+	}
+
+	public async Task Buscar()
+	{
+		var proveedorEncontrado = await proveedorServices.Buscar(proveedor.ProveedorId);
+
+		if (proveedorEncontrado != null)
+		{
+			this.proveedor = proveedorEncontrado;
+		}
+	}
+	public async Task Guardar()
+	{
+		var guardo = await proveedorServices.Guardar(proveedor);
+		if (guardo)
+		{
+			await Task.Delay(3000);
+			Atras();
+		}
+	}
+	void Atras()
+	{
+		Navigation.NavigateTo("/proveedor");
+	}
+}

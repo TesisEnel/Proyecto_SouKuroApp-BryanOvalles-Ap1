@@ -1,0 +1,65 @@
+﻿@page "/proveedor"
+@page "/proveedor/{ProveedorId:int}"
+@using Microsoft.AspNetCore.Authorization
+@using Shared.Models
+@attribute [Authorize]
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject ProveedorServices proveedorServices
+
+<div class="card">
+    <div class="card-header">
+        <h3>Detalles del Proveedor</h3>
+        <a href="/proveedorCreate" class="btn btn-outline-primary bi bi-plus-square">  Crear</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">ProveedorId</th>
+                    <th scope="col" class="text-center">Nombre Del Proveedor</th>
+                    <th scope="col" class="text-center">Direcci&oacute;n</th>
+                    <th scope="col" class="text-center">Email</th>
+                    <th scope="col" class="text-center">Telefono</th>
+                    
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in listaProveedor)
+                {
+                    <tr>
+                        <td class="text-center">@item.ProveedorId</td>
+                        <td class="text-center">@item.Nombre</td>
+                        <td class="text-center">@item.Direccion</td>
+                        <td class="text-center">@item.Email</td>
+                        <td class="text-center">@item.Telefono</td>
+                        <td>
+                            <a href="/deleteProveedor/@item.ProveedorId" class="btn btn-danger bi bi-trash-fill">Borrar</a>
+                            <a href="/proveedorEdit/@item.ProveedorId" class="btn btn-primary bi-box-arrow-up-right">Editar</a>
+                            <a href="/detailsProveedor/@item.ProveedorId" class="btn btn-success bi-box-arrow-up-right">Detalles</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+    <div class="card-footer">
+        <a href="/" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int ProveedorId { get; set; }
+    public Proveedor proveedor { get; set; } = new Proveedor();
+    public List<Proveedor> listaProveedor { get; set; } = new List<Proveedor>();
+    public int Opcion = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        listaProveedor = await proveedorServices.Listar(t => true);
+    }
+}
