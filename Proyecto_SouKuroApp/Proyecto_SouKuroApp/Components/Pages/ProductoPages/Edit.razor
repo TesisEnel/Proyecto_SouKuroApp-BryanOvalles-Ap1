@@ -1,0 +1,160 @@
+﻿@page "/productoEdit"
+@page "/productoEdit/{ProductoId:int}"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject ProductoServices productoService
+@using Shared.Models;
+
+<PageTitle>Editar</PageTitle>
+
+<EditForm Model="producto" OnValidSubmit="Modificar">
+	<DataAnnotationsValidator />
+	<div class="card">
+		<div class="card-header">
+			<h1>Editar Producto</h1>
+		</div>
+		<div class=" card-body">
+			<label>ProductoId</label>
+			<div class="input-group">
+				<InputNumber min="0" @bind-Value="producto.ProcuctoId" class="id-input" readonly></InputNumber>
+			</div>
+			<div>
+				<label>Nombre:</label>
+				<InputText @bind-Value="producto.Nombre" class="form-control"></InputText>
+				<ValidationMessage For="@(() => producto.Nombre)" />
+			</div>
+			<div>
+				<label>Stock:</label>
+				<InputNumber @bind-Value="producto.Stock" class="form-control"></InputNumber>
+				<ValidationMessage For="@(() => producto.Stock)" />
+			</div>
+			<div>
+				<label>Descripci&oacute;n:</label>
+				<InputText @bind-Value="producto.Descripcion" class="form-control"></InputText>
+				<ValidationMessage For="@(() => producto.Descripcion)" />
+			</div>
+			<div>
+				<label>Precio:</label>
+				<InputNumber @bind-Value="producto.Precio" class="form-control"></InputNumber>
+				<ValidationMessage For="@(() => producto.Precio)" />
+			</div>
+			<div class="card-footer ">
+
+				<div class="card-footer">
+					<button type="button" class="btn btn-outline-primary" @onclick="Atras">Volver <i class="bi bi-arrow-return-left" /></button>
+					<button type="submit" class="btn btn-outline-success">Guardar <i class="bi bi-floppy-fill" /></button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="card card-header mt-5">
+		<h3>Detalle de Producto</h3>
+
+		<div class="row">
+			<div class="col">
+				<label class="fw-bold mt-3">ProductoId</label>
+				<InputNumber @bind-Value="Detalles.ProductoId" class="form-control"></InputNumber>
+				<ValidationMessage For="@(() => Detalles.ProductoId)" />
+			</div>
+			<div class="col">
+				<label class="fw-bold mt-3">Categoria del Producto</label>
+				<InputText @bind-Value="Detalles.Categoria" class="form-control"></InputText>
+				<ValidationMessage For="@(() => Detalles.Categoria)" />
+			</div>
+		</div>
+		<div class="card-footer d-flex justify-content-center">
+			<button type="button" @onclick="AgregarDetalle" class="btn btn-outline-success">Agregar</button>
+		</div>
+		<table class='table table-bordered table-hover'>
+			<thead>
+				<tr>
+
+					<th>ProductoId</th>
+					<th>Categoria del Producto</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var detalle in listaDetalles)
+				{
+
+					<tr>
+						<td>@detalle.ProductoId</td>
+						<td>@detalle.Categoria</td>
+						<td><button type="button" class="btn btn-outline-danger bi bi-trash-fill" @onclick=@(() => RemoverDetalle(detalle))>Eliminar</button></td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</EditForm>
+
+
+
+<div>
+	<a href="/producto">Back to List</a>
+</div>
+
+@code {
+
+	[Parameter]
+	public int ProductoId { get; set; }
+	public Producto producto { get; set; } = new Producto();
+	public string Mensaje = " ";
+	public Producto_Detalle Detalles { get; set; } = new Producto_Detalle();
+	public List<Producto_Detalle> listaDetalles = new List<Producto_Detalle>();
+	private bool Existe = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+
+		if (ProductoId > 0)
+		{
+			producto = await productoService.Buscar(ProductoId);
+			if (producto != null)
+			{
+				listaDetalles = producto.Detalle.ToList();
+			}
+			else
+			{
+				Navigation.NavigateTo("/Error");
+			}
+		}
+
+		// Inicializar Detalles
+		Detalles = new Producto_Detalle();
+	}
+
+	public async Task Modificar()
+	{
+		var guardo = await productoService.Modificar(producto);
+		if (guardo)
+		{
+			await Task.Delay(500);
+			Navigation.NavigateTo("/producto");
+		}
+
+	}
+
+	void Atras()
+	{
+		Navigation.NavigateTo("/producto");
+	}
+
+	public async Task AgregarDetalle()
+	{
+		if (producto != null)
+		{
+			Detalles.ProductoId = producto.ProcuctoId;
+			listaDetalles.Add(Detalles);
+			producto.Detalle.Add(Detalles);
+		}
+	}
+
+	public async Task RemoverDetalle(Producto_Detalle details)
+	{
+		producto.Detalle.Remove(details);
+		listaDetalles.Remove(details);
+	}
+}

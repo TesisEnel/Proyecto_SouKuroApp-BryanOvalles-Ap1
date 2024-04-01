@@ -21,7 +21,6 @@ public class Producto
     [Required]
     public int Stock { get; set; } = 0;
 
-    [ForeignKey("ProductoId")]
-    ICollection<Producto_Detalle> ProductoDetalle { get; set; } = new List<Producto_Detalle>();
-    
+    [ForeignKey("Producto")]
+    public ICollection<Producto_Detalle> Detalle { get; set; } = new List<Producto_Detalle>();
 }
