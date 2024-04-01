@@ -10,57 +10,57 @@ namespace Proyecto_SouKuroApp.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<double>(
+            migrationBuilder.AlterColumn<decimal>(
                 name: "Total",
                 table: "compras",
-                type: "float",
+                type: "decimal(18,2)",
                 nullable: false,
-                oldClrType: typeof(decimal),
-                oldType: "decimal(18,2)");
+                oldClrType: typeof(int),
+                oldType: "int");
 
-            migrationBuilder.AlterColumn<double>(
+            migrationBuilder.AlterColumn<decimal>(
                 name: "SubTotal",
                 table: "compras",
-                type: "float",
+                type: "decimal(18,2)",
                 nullable: false,
-                oldClrType: typeof(decimal),
-                oldType: "decimal(18,2)");
+                oldClrType: typeof(int),
+                oldType: "int");
 
-            migrationBuilder.AlterColumn<double>(
+            migrationBuilder.AlterColumn<decimal>(
                 name: "ITBIS",
                 table: "compras",
-                type: "float",
+                type: "decimal(18,2)",
                 nullable: false,
-                oldClrType: typeof(decimal),
-                oldType: "decimal(18,2)");
+                oldClrType: typeof(int),
+                oldType: "int");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<decimal>(
+            migrationBuilder.AlterColumn<int>(
                 name: "Total",
                 table: "compras",
-                type: "decimal(18,2)",
+                type: "int",
                 nullable: false,
-                oldClrType: typeof(double),
-                oldType: "float");
+                oldClrType: typeof(decimal),
+                oldType: "decimal(18,2)");
 
-            migrationBuilder.AlterColumn<decimal>(
+            migrationBuilder.AlterColumn<int>(
                 name: "SubTotal",
                 table: "compras",
-                type: "decimal(18,2)",
+                type: "int",
                 nullable: false,
-                oldClrType: typeof(double),
-                oldType: "float");
+                oldClrType: typeof(decimal),
+                oldType: "decimal(18,2)");
 
-            migrationBuilder.AlterColumn<decimal>(
+            migrationBuilder.AlterColumn<int>(
                 name: "ITBIS",
                 table: "compras",
-                type: "decimal(18,2)",
+                type: "int",
                 nullable: false,
-                oldClrType: typeof(double),
-                oldType: "float");
+                oldClrType: typeof(decimal),
+                oldType: "decimal(18,2)");
         }
     }
 }

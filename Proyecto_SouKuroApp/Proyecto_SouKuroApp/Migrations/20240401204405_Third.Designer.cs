@@ -12,7 +12,7 @@ using Proyecto_SouKuroApp.Data;
 namespace Proyecto_SouKuroApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240401201005_Third")]
+    [Migration("20240401204405_Third")]
     partial class Third
     {
         /// <inheritdoc />
@@ -244,8 +244,8 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.Property<DateTime>("Fecha_Compra")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("ITBIS")
-                        .HasColumnType("float");
+                    b.Property<decimal>("ITBIS")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("NFC")
                         .IsRequired()
@@ -254,15 +254,15 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.Property<int>("No_Compra")
                         .HasColumnType("int");
 
-                    b.Property<double>("SubTotal")
-                        .HasColumnType("float");
+                    b.Property<decimal>("SubTotal")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Total")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("CompraId");
 
