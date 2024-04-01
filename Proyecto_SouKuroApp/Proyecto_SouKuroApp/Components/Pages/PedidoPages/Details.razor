@@ -1,0 +1,48 @@
+﻿@page "/detailsPedido"
+@page "/detailsPedido/{PedidoId:int}"
+@inject PedidoServices pedidoServices
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@using Shared.Models
+
+
+<div class="card">
+    
+    <div class="card-body">
+        <h5 class="card-title">Detalles del Pedido</h5>
+        <dl class="row">
+            <dt class="col-sm-3">PedidoId:</dt>
+            <dd class="col-sm-9">@pedido.PedidoId</dd>
+            
+            <dt class="col-sm-3">Fecha:</dt>
+            <dd class="col-sm-9">@pedido.Fecha_Pedido</dd>
+
+            <dt class="col-sm-3">Direcci&oacute;n:</dt>
+            <dd class="col-sm-9">@pedido.Direccion</dd>
+            
+            <dt class="col-sm-3">Estado:</dt>
+            <dd class="col-sm-9">@pedido.Estado</dd>
+
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a href="/pedido" class="btn btn-outline-primary bi bi bi-arrow-return-left"> Volver</a>
+       
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int PedidoId { get; set; }
+    public Pedido pedido { get; set; } = new Pedido();
+
+    protected override async Task OnInitializedAsync()
+    {
+        pedido = await pedidoServices.Buscar(PedidoId);
+    }
+
+    void Atras()
+    {
+        Navigation.NavigateTo("/venta");
+    }
+}

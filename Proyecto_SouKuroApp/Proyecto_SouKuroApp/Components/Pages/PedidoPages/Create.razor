@@ -1,0 +1,89 @@
+﻿@page "/pedidoCreate"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject PedidoServices pedidoService
+@using Shared.Models;
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h4>Pedido</h4>
+<hr />
+
+<EditForm Model="pedido" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator />
+	<ValidationSummary class="text-danger" />
+	<div class="mb-3">
+		<label for="pedidoId" class="form-label">PedidoId:</label>
+		<label id="pedidoId" class="form-control" >@pedido.PedidoId</label>
+		<ValidationMessage For="() => pedido.PedidoId" class="text-danger" />
+	</div>
+	<div class="mb-3">
+		<label for="fecha" class="form-label">Fecha:</label>
+		<InputDate id="fecha" @bind-Value="pedido.Fecha_Pedido" class="form-control" />
+		<ValidationMessage For="() => pedido.Fecha_Pedido" class="text-danger" />
+	</div>
+	<div class="mb-3">
+		<label for="direccion" class="form-label">Direcci&oacute;n:</label>
+		<InputText id="direccion" @bind-Value="pedido.Direccion" class="form-control" />
+		<ValidationMessage For="() => pedido.Direccion" class="text-danger" />
+	</div>
+	<div class="mb-3">
+		<label for="estado" class="form-label">Estado:</label>
+		<InputText id="estado" @bind-Value="pedido.Estado" class="form-control" />
+		<ValidationMessage For="() => pedido.Estado" class="text-danger" />
+	</div>
+
+	<div class="card-footer">
+		<a href="/pedido" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+		<button type="submit" class="btn btn-primary">Crear</button>
+	</div>
+</EditForm>
+
+@code {
+	[Parameter]
+	public int PedidoId { get; set; }
+	public Pedido pedido { get; set; } = new Pedido();
+	public string Mensaje = " ";
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (PedidoId > 0)
+		{
+			this.pedido = await pedidoService.Buscar(PedidoId);
+			if (this.pedido != null)
+			{
+				await this.Buscar();
+			}
+			else
+			{
+				Navigation.NavigateTo("/Error");
+			}
+		}
+	}
+
+	public async Task Buscar()
+	{
+		var pedidoEncontrado = await pedidoService.Buscar(pedido.PedidoId);
+
+		if (pedidoEncontrado != null)
+		{
+			this.pedido = pedidoEncontrado;
+		}
+	}
+	public async Task Guardar()
+	{
+		var guardo = await pedidoService.Guardar(pedido);
+		if (guardo)
+		{
+			await Task.Delay(3000);
+			Atras();
+		}
+
+	}
+	void Atras()
+	{
+		Navigation.NavigateTo("/pedido");
+	}
+}

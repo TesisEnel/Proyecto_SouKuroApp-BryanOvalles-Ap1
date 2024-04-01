@@ -19,7 +19,8 @@ namespace Proyecto_SouKuroApp.Services
         public async Task<bool> Insertar(Pedido pedido)
         {
             _contexto.pedidos.Add(pedido);
-            return await _contexto.SaveChangesAsync() > 0;
+            int filasAfectadas = await _contexto.SaveChangesAsync();
+            return filasAfectadas > 0;
         }
         public async Task<bool> Modificar(Pedido pedido)
         {
