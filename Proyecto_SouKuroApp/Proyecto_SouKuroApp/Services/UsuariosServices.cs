@@ -17,10 +17,11 @@ namespace Proyecto_SouKuroApp.Services
         {
             return await _contexto.usuarios.AnyAsync(c => c.UsuarioId == UsuarioId);
         }
-       /* public async Task<Usuario?> GetCompras(int id)
+        public async Task<ApplicationUser?> GetUser(string id)
         {
-            return await _contexto.usuarios.Include(c => c.Detalle).FirstOrDefaultAsync(c => c.CompraId == id);
-        }*/
+            return _contexto.Users.FirstOrDefault(t => t.Id == id);
+        }
+
         public async Task<bool> Insertar(Usuario usuario)
         {
             _contexto.usuarios.Add(usuario);
@@ -41,13 +42,14 @@ namespace Proyecto_SouKuroApp.Services
             else
                 return await Modificar(usuario);
         }
-        public async Task<bool> Eliminar(Usuario usuario)
+        public async Task<bool> Delete(string id)
         {
-            var c = await _contexto.usuarios.FindAsync(usuario.UsuarioId);
-            _contexto.Entry(c!).State = EntityState.Detached;
-            _contexto.Entry(usuario).State = EntityState.Deleted;
-            return await _contexto.SaveChangesAsync() > 0;
+            return await _contexto!.Users
+                .AsNoTracking()
+                .Where(a => a.Id == id)
+                .ExecuteDeleteAsync() > 0;
         }
+
         public async Task<Usuario?> Buscar(int usuario)
         {
             return await _contexto.usuarios
