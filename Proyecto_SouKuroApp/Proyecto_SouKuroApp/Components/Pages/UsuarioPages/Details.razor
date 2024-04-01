@@ -1,27 +1,26 @@
 ﻿@page "/detailsUsuario"
-@page "/detailsUsuario/{UsuarioId:int}"
+@page "/detailsUsuario/{Id}"
 @inject UsuariosServices usuarioservice
 @inject NavigationManager Navigation
+@inject UserManager<ApplicationUser> userManager
+@inject ApplicationDbContext context
 @rendermode InteractiveServer
+@using Microsoft.AspNetCore.Identity
+@using Proyecto_SouKuroApp.Data
 @using Shared.Models
 
 <div class="card">
-   
+    <div class="card-header bg-danger text-light">
+        <h1 class="mb-0">Detalles del Usuario</h1>
+    </div>
     <div class="card-body">
-        <h5 class="card-title">Detalles del Usuario</h5>
-        <dl class="row">
-            <dt class="col-sm-3">UsuarioId:</dt>
-            <dd class="col-sm-9">@usuario.UsuarioId</dd>
+    <dl class="row">
 
-            <dt class="col-sm-3">Nombre Usuario</dt>
-            <dd class="col-sm-9">@usuario.Nombre_Usuario</dd>
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@User.UserName</dd>
 
 
-            <dt class="col-sm-3">Contrasena:</dt>
-            <dd class="col-sm-9">@usuario.Contrasena</dd>
 
-            <dt class="col-sm-3">Rol:</dt>
-            <dd class="col-sm-9">@usuario.Rol</dd>
 
 
 
@@ -29,26 +28,33 @@
     </div>
     <div class="card-footer">
         <a href="/usuario" class="btn btn-outline-primary bi bi bi-arrow-return-left"> Volver</a>
-        
+     
     </div>
 </div>
 
 @code {
     [Parameter]
-    public int UsuarioId { get; set; }
-
+    public string Id { get; set; }
+    public ApplicationUser User { get; set; } = new ApplicationUser();
     public Usuario usuario { get; set; } = new Usuario();
 
 
     protected override async Task OnInitializedAsync()
     {
 
-        usuario = await usuarioservice.Buscar(UsuarioId);
+        if (!Guid.TryParse(Id, out Guid userId))
+        {
+            // Manejar el caso en que el Id no sea un Guid válido
+            // Puedes mostrar un mensaje de error, por ejemplo
+            return;
+        }
 
-
-
+        // Obtener el usuario por su Id
+        User = await userManager.FindByIdAsync(userId.ToString());
     }
 
+
+  
 
     void Atras()
     {
