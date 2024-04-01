@@ -1,9 +1,15 @@
 ﻿@page "/usuarioEdit"
-@page "/usuarioEdit/{UsuarioId:int}"
-@rendermode InteractiveServer
-@inject NavigationManager Navigation
+@page "/usuarioEdit/{Id}"
 @inject UsuariosServices usuarioservice
-@using Shared.Models;
+@inject NavigationManager Navigation
+@inject UserManager<ApplicationUser> userManager
+@inject ApplicationDbContext context
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Identity
+@using Proyecto_SouKuroApp.Data
+@using Shared.Models
 <PageTitle>Modificar</PageTitle>
 
 <h1>Modificar</h1>
@@ -12,29 +18,16 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <EditForm method="post" Model="usuario" OnValidSubmit="Modificar" FormName="usuarioEdit" Enhance>
+        <EditForm method="post" Model="User" OnValidSubmit="Modificar" FormName="usuarioEdit" Enhance>
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
+            
             <div class="mb-3">
-                <label for="UsuarioId" class="form-label">UsuarioId:</label>
-                <InputNumber id="UsuarioId" @bind-Value="usuario.UsuarioId" class="form-control" />
-                <ValidationMessage For="() => usuario.UsuarioId" class="text-danger" />
+                <label for="NombreUsuario" class="form-label">Email:</label>
+                <InputText id="NombreUsuario" @bind-Value="User.UserName" class="form-control" />
+                <ValidationMessage For="() => User.UserName" class="text-danger" />
             </div>
-            <div class="mb-3">
-                <label for="NombreUsuario" class="form-label">NombreUsuario:</label>
-                <InputText id="NombreUsuario" @bind-Value="usuario.Nombre_Usuario" class="form-control" />
-                <ValidationMessage For="() => usuario.Nombre_Usuario" class="text-danger" />
-            </div>
-            <div class="mb-3">
-                <label for="contrasena" class="form-label">contrasena:</label>
-                <InputText id="contrasena" @bind-Value="usuario.Contrasena" class="form-control" />
-                <ValidationMessage For="() => usuario.Contrasena" class="text-danger" />
-            </div>
-            <div class="mb-3">
-                <label for="rol" class="form-label">Rol:</label>
-                <InputText id="rol" @bind-Value="usuario.Rol" class="form-control" />
-                <ValidationMessage For="() => usuario.Rol" class="text-danger" />
-            </div>
+    
             <div class="card-footer">
                 <a href="/usuario" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
                 <button type="submit" class="btn btn-primary">Modificar</button>
@@ -49,36 +42,45 @@
 
 @code {
     [Parameter]
-    public int UsuarioId { get; set; }
-    public Usuario usuario { get; set; } = new Usuario();
+    public string Id { get; set; }
+    public ApplicationUser User { get; set; } = new ApplicationUser();
 
 
     protected override async Task OnInitializedAsync()
     {
 
-        if (UsuarioId > 0)
+        if (!Guid.TryParse(Id, out Guid userId))
         {
-            usuario = await usuarioservice.Buscar(UsuarioId);
+            // Manejar el caso en que el Id no sea un Guid válido
+            // Puedes mostrar un mensaje de error, por ejemplo
+            return;
         }
+
+        // Obtener el usuario por su Id
+        User = await userManager.FindByIdAsync(userId.ToString());
     }
 
 
-    
+
     public async Task Modificar()
     {
-        var guardo = await usuarioservice.Modificar(usuario);
-        if (guardo)
+        var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authenticationState.User;
+        var applicationUser = user.Identity.Name;
+        var usuarioActualizar = context.Users.FirstOrDefault(u => u.UserName == applicationUser);
+        var guardado = await usuarioservice.Update(usuarioActualizar);
+        if (!guardado)
         {
-
-
-            await Task.Delay(500);
-            Navigation.NavigateTo("/usuario");
+            return;
         }
-
+        else
+        {
+          
+        
+            User = new ApplicationUser();
+            
+        }
     }
-
-  
-
     void Atras()
     {
         Navigation.NavigateTo("/usuario");
