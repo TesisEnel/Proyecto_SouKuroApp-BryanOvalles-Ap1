@@ -40,16 +40,16 @@
                 <InputNumber id="gastado" @bind-Value="informe.Gastado" class="form-control" />
                 <ValidationMessage For="() => informe.Gastado" class="text-danger" />
             </div>
-            <button type="submit" class="btn btn-primary">Create</button>
-
+            <div class="card-footer">
+                <a href="/informe" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+                <button type="submit" class="btn btn-primary">Modificar</button>
+            </div>
 
         </EditForm>
     </div>
 </div>
 
-<div>
-    <a href="/informe">Back to List</a>
-</div>
+
 
 @code {
     [Parameter]

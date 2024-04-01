@@ -10,9 +10,8 @@
 
 <h4>Venta</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <EditForm method="post" Model="venta" OnValidSubmit="Guardar" FormName="ventaCreate" Enhance>
+
+        <EditForm  Model="venta" OnValidSubmit="Guardar" >
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
@@ -30,17 +29,15 @@
                 <InputDate id="fecha" @bind-Value="venta.Fecha" class="form-control" />
                 <ValidationMessage For="() => venta.Fecha" class="text-danger" />
             </div>
-           
-            <button type="submit" class="btn btn-primary">Create</button>
 
-
+            <div class="card-footer">
+                  <a href="/venta" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+                  <button type="submit" class="btn btn-primary">Crear</button>
+            </div>
         </EditForm>
-    </div>
-</div>
+ 
 
-<div>
-    <a href="/venta">Back to List</a>
-</div>
+
 
 
 @code {
