@@ -35,17 +35,17 @@
                 <InputText id="rol" @bind-Value="usuario.Rol" class="form-control" />
                 <ValidationMessage For="() => usuario.Rol" class="text-danger" />
             </div>
-            <button type="submit" class="btn btn-primary">Modificar
-            </button>
+            <div class="card-footer">
+                <a href="/usuario" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+                <button type="submit" class="btn btn-primary">Modificar</button>
+            </div>
 
 
         </EditForm>
     </div>
 </div>
 
-<div>
-    <a href="/usuario">Back to List</a>
-</div>
+
 
 @code {
     [Parameter]

@@ -11,7 +11,7 @@
 <h4>Usuario</h4>
 <hr />
 
-        <EditForm  Model="usuario" OnValidSubmit="Guardar" >
+<EditForm Model="usuario" OnValidSubmit="Guardar" FormName="usuarioCreate">
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
@@ -34,8 +34,10 @@
                 <InputText id="rol" @bind-Value="usuario.Rol" class="form-control" />
                 <ValidationMessage For="() => usuario.Rol" class="text-danger" />
             </div>
-            <button type="submit" class="btn btn-primary">Create</button>
-
+                <div class="card-footer">
+                    <a href="/usuario" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                </div>
      
         </EditForm>
 
