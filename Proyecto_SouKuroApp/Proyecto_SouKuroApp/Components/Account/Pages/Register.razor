@@ -32,6 +32,16 @@
                 <label for="email">Email</label>
                 <ValidationMessage For="() => Input.Email" class="text-danger" />
             </div>
+            <div class="mb-3">
+                <label for="NombreUsuario" class="form-label">Nombre Usuario:</label>
+                <InputText id="NombreUsuario" @bind-Value="User.NombreUsuario" class="form-control" />
+                <ValidationMessage For="() => User.UserName" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="Fecha" class="form-label">Fecha Nacimiento:</label>
+                <InputDate id="Fecha" @bind-Value="User.FechaNacimiento" class="form-control" />
+                <ValidationMessage For="() => User.FechaNacimiento" class="text-danger" />
+            </div>
             <div class="form-floating mb-3">
                 <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label for="password">Password</label>
@@ -56,6 +66,9 @@
 
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
+
+    public ApplicationUser User { get; set; } = new ApplicationUser();
+
 
     private string? Message => identityErrors is null ? null : $"Error: {string.Join(", ", identityErrors.Select(error => error.Description))}";
 
