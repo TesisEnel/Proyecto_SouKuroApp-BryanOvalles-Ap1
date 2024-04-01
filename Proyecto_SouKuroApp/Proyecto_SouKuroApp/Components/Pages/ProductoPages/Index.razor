@@ -34,19 +34,19 @@
 				@foreach (var item in ListaProducto)
 				{
 					<tr>
-						<td class="text-center">@item.ProcuctoId</td>
+						<td class="text-center">@item.ProductoId</td>
 						<td class="text-center">@item.Nombre</td>
 						<td class="text-center">@item.Descripcion</td>
 						<td class="text-center">@item.Stock</td>
 						<td></td>
 						<td>
-							<a href="/deleteProducto/@item.ProcuctoId" class="btn btn-danger bi bi-trash-fill"></a>
+							<a href="/deleteProducto/@item.ProductoId" class="btn btn-danger bi bi-trash-fill"></a>
 						</td>
 						<td>
-							<a href="/productoEdit/@item.ProcuctoId" class="btn btn-primary bi-box-arrow-up-right"></a>
+							<a href="/productoEdit/@item.ProductoId" class="btn btn-primary bi-box-arrow-up-right"></a>
 						</td>
 						<td>
-							<a href="/detailsProducto/@item.ProcuctoId" class="btn btn-success bi-box-arrow-up-right"></a>
+							<a href="/detailsProducto/@item.ProductoId" class="btn btn-success bi-box-arrow-up-right"></a>
 						</td>
 					</tr>
 				}

@@ -16,7 +16,7 @@
 		<div class=" card-body">
 			<label>ProductoId</label>
 			<div class="input-group">
-				<InputNumber min="0" @bind-Value="producto.ProcuctoId" class="id-input" readonly></InputNumber>
+				<InputNumber min="0" @bind-Value="producto.ProductoId" class="id-input" readonly></InputNumber>
 			</div>
 			<div>
 				<label>Nombre:</label>
@@ -69,8 +69,6 @@
 		<table class='table table-bordered table-hover'>
 			<thead>
 				<tr>
-
-					<th>ProductoId</th>
 					<th>Categoria del Producto</th>
 					<th></th>
 				</tr>
@@ -78,9 +76,7 @@
 			<tbody>
 				@foreach (var detalle in listaDetalles)
 				{
-
 					<tr>
-						<td>@detalle.ProductoId</td>
 						<td>@detalle.Categoria</td>
 						<td><button type="button" class="btn btn-outline-danger bi bi-trash-fill" @onclick=@(() => RemoverDetalle(detalle))>Eliminar</button></td>
 					</tr>
@@ -111,7 +107,7 @@
 
 		if (ProductoId > 0)
 		{
-			producto = await productoService.Buscar(ProductoId);
+			producto = await productoService.GetProducto(ProductoId);
 			if (producto != null)
 			{
 				listaDetalles = producto.Detalle.ToList();
@@ -146,9 +142,10 @@
 	{
 		if (producto != null)
 		{
-			Detalles.ProductoId = producto.ProcuctoId;
+			Detalles.Id = producto.ProductoId;
 			listaDetalles.Add(Detalles);
 			producto.Detalle.Add(Detalles);
+			Detalles = new Producto_Detalle();
 		}
 	}
 

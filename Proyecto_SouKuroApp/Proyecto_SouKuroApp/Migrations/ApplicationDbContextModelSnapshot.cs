@@ -287,7 +287,7 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.ToTable("detalleCompras");
                 });
 
-            modelBuilder.Entity("Shared.Models.Informe_Mensual", b =>
+            modelBuilder.Entity("Shared.Models.Informe", b =>
                 {
                     b.Property<int>("InformeId")
                         .ValueGeneratedOnAdd()
@@ -365,11 +365,11 @@ namespace Proyecto_SouKuroApp.Migrations
 
             modelBuilder.Entity("Shared.Models.Producto", b =>
                 {
-                    b.Property<int>("ProcuctoId")
+                    b.Property<int>("ProductoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProcuctoId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductoId"));
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -385,7 +385,7 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
-                    b.HasKey("ProcuctoId");
+                    b.HasKey("ProductoId");
 
                     b.ToTable("productos");
                 });
@@ -406,6 +406,8 @@ namespace Proyecto_SouKuroApp.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductoId");
 
                     b.ToTable("producto_Detalles");
                 });
@@ -542,7 +544,21 @@ namespace Proyecto_SouKuroApp.Migrations
                         .HasForeignKey("Compra");
                 });
 
+            modelBuilder.Entity("Shared.Models.Producto_Detalle", b =>
+                {
+                    b.HasOne("Shared.Models.Producto", null)
+                        .WithMany("Detalle")
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Shared.Models.Compra", b =>
+                {
+                    b.Navigation("Detalle");
+                });
+
+            modelBuilder.Entity("Shared.Models.Producto", b =>
                 {
                     b.Navigation("Detalle");
                 });

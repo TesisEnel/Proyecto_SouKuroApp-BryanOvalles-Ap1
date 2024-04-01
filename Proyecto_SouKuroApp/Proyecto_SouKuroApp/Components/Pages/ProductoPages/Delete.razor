@@ -13,7 +13,7 @@
         <h5 class="card-title">Detalles de la Compra</h5>
         <dl class="row">
             <dt class="col-sm-3">ProductoId:</dt>
-            <dd class="col-sm-9">@producto.ProcuctoId</dd>
+            <dd class="col-sm-9">@producto.ProductoId</dd>
 
             <dt class="col-sm-3">Nombre del Producto</dt>
             <dd class="col-sm-9">@producto.Nombre</dd>
@@ -30,8 +30,6 @@
     <table class='table table-bordered table-hover'>
         <thead>
             <tr>
-
-                <th>ProductoId</th>
                 <th>Categoria</th>
                 <th></th>
             </tr>
@@ -39,10 +37,7 @@
         <tbody>
             @foreach (var detalle in listaDetalles)
             {
-
                 <tr>
-
-                    <td>@detalle.ProductoId</td>
                     <td>@detalle.Categoria</td>
                 </tr>
             }
@@ -67,7 +62,7 @@
     protected override async Task OnInitializedAsync()
     {
 
-        producto = await productoservice.Buscar(ProductoId);
+        producto = await productoservice.GetProducto(ProductoId);
 
         if (producto != null && producto.Detalle != null)
         {
@@ -84,7 +79,7 @@
 
     public async Task Eliminar()
     {
-        if (!await productoservice.Existe(producto.ProcuctoId))
+        if (!await productoservice.Existe(producto.ProductoId))
         {
             return;
         }

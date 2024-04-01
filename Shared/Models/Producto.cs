@@ -11,7 +11,7 @@ namespace Shared.Models;
 public class Producto
 {
     [Key]
-    public int ProcuctoId { get; set; }
+    public int ProductoId { get; set; }
     [Required]
     public string Nombre { get; set; } = string.Empty;
     [Required]
@@ -21,6 +21,6 @@ public class Producto
     [Required]
     public int Stock { get; set; } = 0;
 
-    [ForeignKey("Producto")]
+    [ForeignKey("ProductoId")]
     public ICollection<Producto_Detalle> Detalle { get; set; } = new List<Producto_Detalle>();
 }

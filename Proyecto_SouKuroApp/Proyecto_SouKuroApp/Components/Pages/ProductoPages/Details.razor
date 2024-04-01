@@ -13,7 +13,7 @@
         <h5 class="card-title">Detalles del Producto</h5>
         <dl class="row">
             <dt class="col-sm-3">ProductoId:</dt>
-            <dd class="col-sm-9">@producto.ProcuctoId</dd>
+            <dd class="col-sm-9">@producto.ProductoId</dd>
 
             <dt class="col-sm-3">Nombre del Producto</dt>
             <dd class="col-sm-9">@producto.Nombre</dd>
@@ -27,15 +27,12 @@
             <dt class="col-sm-3">Descripci&oacute;n:</dt>
             <dd class="col-sm-9">@producto.Descripcion</dd>
 
-
         </dl>
     </div>
 
     <table class='table table-bordered table-hover'>
         <thead>
             <tr>
-
-                <th>ProductoId</th>
                 <th>Categoria del Producto</th>
                 <th></th>
             </tr>
@@ -43,10 +40,7 @@
         <tbody>
             @foreach (var detalle in listaDetalles)
             {
-
                 <tr>
-
-                    <td>@detalle.ProductoId</td>
                     <td>@detalle.Categoria</td>
                 </tr>
             }
@@ -61,9 +55,7 @@
 @code {
     [Parameter]
     public int ProductoId { get; set; }
-
     public Producto producto { get; set; } = new Producto();
-
     public Producto_Detalle Detalles { get; set; } = new Producto_Detalle();
     public List<Producto_Detalle> listaDetalles = new List<Producto_Detalle>();
 
@@ -71,7 +63,7 @@
     {
         await Task.Delay(500); // Espera opcional, si es necesario
 
-        producto = await productoservice.Buscar(ProductoId);
+        producto = await productoservice.GetProducto(ProductoId);
 
         if (producto != null)
         {
@@ -89,11 +81,11 @@
     }
     public async Task Buscar()
     {
-        var compraEncontrado = await productoservice.Buscar(producto.ProcuctoId);
+        var productoEncontrado = await productoservice.Buscar(producto.ProductoId);
 
-        if (compraEncontrado != null)
+        if (productoEncontrado != null)
         {
-            this.producto = compraEncontrado;
+            this.producto = productoEncontrado;
         }
     }
 
