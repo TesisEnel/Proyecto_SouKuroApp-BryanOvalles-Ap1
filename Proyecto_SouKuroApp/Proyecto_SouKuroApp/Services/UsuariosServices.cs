@@ -35,6 +35,13 @@ namespace Proyecto_SouKuroApp.Services
             _contexto.Entry(usuario).State = EntityState.Modified;
             return await _contexto.SaveChangesAsync() > 0;
         }
+
+        public async Task<bool> Update(ApplicationUser user)
+        {
+            _contexto!.Users.Update(user);
+            return await _contexto.SaveChangesAsync() > 0;
+        }
+
         public async Task<bool> Guardar(Usuario usuario)
         {
             if (!await Existe(usuario.UsuarioId))
