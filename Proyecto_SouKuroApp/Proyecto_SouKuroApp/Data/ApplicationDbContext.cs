@@ -17,5 +17,12 @@ namespace Proyecto_SouKuroApp.Data
         public DbSet<Informe> Informes { get; set; }
         public DbSet<Compras_Detalles> detalleCompras { get; set; }
         public DbSet<Producto_Detalle> producto_Detalles { get; set; }
-    }
+
+		public DbSet<Centro_de_Pedidos> centro_de_Pedidos { get; set; }
+
+		public DbSet<Centro_Detalle> centro_Detalle { get; set; }
+
+		public DbSet<Reservacion> reservacion { get; set; }
+
+	}
 }
