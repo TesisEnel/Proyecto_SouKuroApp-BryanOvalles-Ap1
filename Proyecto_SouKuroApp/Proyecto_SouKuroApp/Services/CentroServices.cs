@@ -6,8 +6,11 @@ using System.Linq.Expressions;
 namespace Proyecto_SouKuroApp.Services
 {
     public class CentroServices
+
     {
+
         private readonly ApplicationDbContext _contexto;
+      
         public CentroServices(ApplicationDbContext contexto)
         {
             _contexto = contexto;
@@ -62,5 +65,7 @@ namespace Proyecto_SouKuroApp.Services
                     .AsNoTracking()
                     .ToListAsync();
         }
+
+      
     }
 }
