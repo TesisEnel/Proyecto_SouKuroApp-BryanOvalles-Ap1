@@ -1,5 +1,6 @@
 ﻿@page "/cenPedCli"
 @page "/cenPedCli/{CenPedidoId:int}"
+@using Proyecto_SouKuroApp.Data
 @using Shared.Models;
 @inject CentroServices centroservice
 @rendermode InteractiveServer
@@ -8,7 +9,7 @@
 <div class="card">
     <div class="card-header">
         <h3>Detalles de Compra</h3>
-        <a href="/compras/create" class="btn btn-outline-primary bi bi-plus-square">  Crear</a>
+        <a href="/cenPedCli/create" class="btn btn-outline-primary bi bi-plus-square">  Crear</a>
     </div>
     <div class="card-body">
 
