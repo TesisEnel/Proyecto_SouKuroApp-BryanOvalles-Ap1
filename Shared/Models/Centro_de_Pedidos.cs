@@ -22,10 +22,10 @@ namespace Shared.Models
 		[Required]
 		public int Num_Mesa { get; set; }
 
-		[Required]
+	
 		public string Estado_Entrega { get; set; } = string.Empty;
 
-		[Required]
+		
 		public string Estado_Pago { get; set; } = string.Empty;
 
 		[ForeignKey("Centro_de_Pedidos")]
