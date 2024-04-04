@@ -1,0 +1,70 @@
+﻿@page "/cenPedCli"
+@page "/cenPedCli/{CenPedidoId:int}"
+@using Shared.Models;
+@inject CentroServices centroservice
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+
+<div class="card">
+    <div class="card-header">
+        <h3>Detalles de Compra</h3>
+        <a href="/compras/create" class="btn btn-outline-primary bi bi-plus-square">  Crear</a>
+    </div>
+    <div class="card-body">
+
+        
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">ID</th>
+                    <th scope="col" class="text-center">Nombre</th>
+                    <th scope="col" class="text-center">Numero de Entrada</th>
+                    <th scope="col" class="text-center">Numero de Mesa</th>
+                    <th scope="col" class="text-center">Estado de Entrega</th>
+                    <th scope="col" class="text-center">Estado de Pago</th>
+               
+
+                </tr>
+            </thead>
+            <tbody>
+                    @foreach (var item in ListaCenPedido)
+                {
+                    <tr>
+                        <td class="text-center">@item.PedidoId</td>
+                       
+                        <td class="text-center">@item.Nombre_Cliente</td>
+                        <td class="text-center">@item.Numero_Entrada</td>
+                        <td class="text-center">@item.Num_Mesa</td>
+                        <td class="text-center">@item.Estado_Entrega</td>
+                        <td class="text-center">@item.Estado_Pago</td>
+                        
+                      
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+    <div class="card-footer">
+        <a href="/" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+    </div>
+</div>
+
+</div>
+
+@code {
+    [Parameter]
+    public int CenPedidoId { get; set; }
+    public Centro_de_Pedidos CenPedido { get; set; } = new Centro_de_Pedidos();
+    public List<Centro_de_Pedidos> ListaCenPedido { get; set; } = new List<Centro_de_Pedidos>();
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        ListaCenPedido = await centroservice.Listar(t => true);
+      
+    }
+}

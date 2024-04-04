@@ -2,12 +2,15 @@
 @page "/"
 @using Microsoft.AspNetCore.Authorization
 
+
 @attribute [Authorize]
 <PageTitle>Home</PageTitle>
-<AuthorizeView>
-    <Authorized>
+<AuthorizeView Roles="Admin" >
 
-        <div class="card mx-auto shadow-lg" style="max-width:1000px">
+   
+    <Authorized  >
+
+        <div class="card mx-auto shadow-lg" style="max-width:1000px" >
             <div class="card-header d-flex align-items-center justify-content-center">
                 <img src="Logo.png" class="img-logo" />
                 <h2>Piscina Campestre -Menu-</h2>
@@ -78,15 +81,58 @@
                             </div>
                         </a>
                     </div>
+
+                    <div class="col-md-4 text-center">
+                        <a href="/cenPedCli">
+                            <div class="menu-item">
+                                <img src="Icon/User.png" class="icon" />
+                                <p>Centro de Pedido </p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <a href="/">
+                            <div class="menu-item">
+                                <img src="Icon/User.png" class="icon" />
+                                <p>Reservaciones</p>
+                            </div>
+                        </a>
+                    </div>
                     
                 </div>
             </div>
         </div>
     </Authorized>
     <NotAuthorized>
-        <h1>Debes iniciar sesión para acceder a esta página.</h1>
+        <div class="card mx-auto shadow-lg" style="max-width:1000px" >
+            <div class="card-header d-flex align-items-center justify-content-center">
+                <img src="Logo.png" class="img-logo" />
+                <h2>Piscina Campestre -Menu-</h2>
+            </div>
+            <div class="card-body" style="background-color: #ffff; background-size: cover;">
+                    <div class="col-md-4 text-center">
+                    <a href="/cenPedCli">
+                            <div class="menu-item">
+                                <img src="Icon/User.png" class="icon" />
+                                <p>Centro de Pedido </p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <a href="/">
+                            <div class="menu-item">
+                                <img src="Icon/User.png" class="icon" />
+                                <p>Reservaciones</p>
+                            </div>
+                        </a>
+                    </div>
+            </div>
+        </div>
     </NotAuthorized>
+    
 </AuthorizeView>
+
+
 
 
 <style>
