@@ -1,0 +1,87 @@
+﻿@page "/r_Create"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject ReservacionServices reservacionServices
+@using Shared.Models;
+
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h4>Reservacion</h4>
+<hr />
+
+<EditForm Model="reservacion" OnValidSubmit="Guardar" FormName="r_Create">
+	<DataAnnotationsValidator />
+	<ValidationSummary class="text-danger" />
+
+	<div class="mb-3">
+		<label for="nombre" class="form-label">Ingrese el Nombre:</label>
+		<InputText id="nombre" @bind-Value="reservacion.Nombre_Cliente" class="form-control" />
+		<ValidationMessage For="() => reservacion.Nombre_Cliente" class="text-danger" />
+	</div>
+	<div class="mb-3">
+		<label for="cedu" class="form-label">Ingrese su numero de Cedula:</label>
+		<InputText id="cedu" @bind-Value="reservacion.Cedula" class="form-control" />
+		<ValidationMessage For="() => reservacion.Cedula" class="text-danger" />
+	</div>
+	<div class="mb-3">
+		<label for="fecha" class="form-label">Elija su fecha de Reservacion:</label>
+		<InputDate id="fecha" @bind-Value="reservacion.Fecha" class="form-control" />
+		<ValidationMessage For="() => reservacion.Fecha" class="text-danger" />
+	</div>
+
+
+	<div class="card-footer">
+		<a href="/reservacionCli" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+		<button type="submit" class="btn btn-primary">Crear</button>
+	</div>
+
+</EditForm>
+
+@code {
+	[Parameter]
+	public int ReservacionId { get; set; }
+	public Reservacion reservacion { get; set; } = new Reservacion();
+	
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (ReservacionId > 0)
+		{
+			this.reservacion = await reservacionServices.Buscar(ReservacionId);
+			if (this.reservacion != null)
+			{
+				await this.Buscar();
+			}
+			else
+			{
+				Navigation.NavigateTo("/Error");
+			}
+		}
+	}
+
+	public async Task Buscar()
+	{
+		var proveedorEncontrado = await reservacionServices.Buscar(reservacion.ReservacionId);
+
+		if (proveedorEncontrado != null)
+		{
+			this.reservacion = proveedorEncontrado;
+		}
+	}
+	public async Task Guardar()
+	{
+		var guardo = await reservacionServices.Guardar(reservacion);
+		if (guardo)
+		{
+			await Task.Delay(3000);
+			Atras();
+		}
+	}
+	void Atras()
+	{
+		Navigation.NavigateTo("/reservacionCli");
+	}
+}
