@@ -37,6 +37,8 @@ builder.Services.AddScoped<ProductoServices>();
 builder.Services.AddScoped<ProveedorServices>();
 builder.Services.AddScoped<PagosServices>();
 builder.Services.AddScoped<PedidoServices>();
+builder.Services.AddScoped<CentroServices>();
+
 builder.Services.AddQuickGridEntityFrameworkAdapter();;
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
