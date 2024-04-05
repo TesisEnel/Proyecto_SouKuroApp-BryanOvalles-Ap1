@@ -86,9 +86,9 @@
                         <td class="text-center">@item.NFC</td>
                         <td class="text-center">@item.No_Compra</td>
                         <td class="text-center">@item.Telefono</td>
-                        <td class="text-center">@item.Cantidad</td>
-                        <td class="text-center">@item.SubTotal</td>
-                        <td class="text-center">@item.Total</td>
+                        <td class="text-center">@item.Cantidad.ToString("N2")</td>
+                        <td class="text-center">@item.SubTotal.ToString("N2")</td>
+                        <td class="text-center">@item.Total.ToString("N2")</td>
                         <td>
                             <a href="/deleteCompra/@item.CompraId" class="btn btn-danger bi bi-trash-fill">Delete</a>
                             <a href="/comprasEdit/@item.CompraId" class="btn btn-primary bi-box-arrow-up-right">Edit</a>

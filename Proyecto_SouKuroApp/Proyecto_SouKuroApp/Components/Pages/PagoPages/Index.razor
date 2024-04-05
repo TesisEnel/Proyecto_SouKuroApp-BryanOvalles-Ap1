@@ -78,8 +78,8 @@
                 {
                     <tr>
                         <td class="text-center">@item.PagoId</td>
-                        <td class="text-center">@item.Fecha_Pago</td>
-                        <td class="text-center">@item.Monto</td>
+                        <td class="text-center">@item.Fecha_Pago.ToShortDateString()</td>
+                        <td class="text-center">@item.Monto.ToString("N2")</td>
                         <td class="text-center">@item.Metodo</td>
                         <td class="text-center">@item.Estado</td>
 

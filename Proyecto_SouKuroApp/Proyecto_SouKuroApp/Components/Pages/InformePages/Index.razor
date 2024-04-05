@@ -88,10 +88,10 @@
                 {
                     <tr>
                         <td class="text-center">@item.InformeId</td>
-                        <td class="text-center">@item.Fecha_Inicio</td>
-                        <td class="text-center">@item.Fecha_Final</td>
-                        <td class="text-center">@item.Total_Compras</td>
-                        <td class="text-center">@item.Gastado</td>
+                        <td class="text-center">@item.Fecha_Inicio.ToShortDateString()</td>
+                        <td class="text-center">@item.Fecha_Final.ToShortDateString()</td>
+                        <td class="text-center">@item.Total_Compras.ToString("N2")</td>
+                        <td class="text-center">@item.Gastado.ToString("N2")</td>
 
                         <td>
                             <a href="/deleteInforme/@item.InformeId" class="btn btn-danger bi bi-trash-fill">Delete</a>
