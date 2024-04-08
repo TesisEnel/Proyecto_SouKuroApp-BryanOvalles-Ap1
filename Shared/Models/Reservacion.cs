@@ -21,6 +21,8 @@ namespace Shared.Models
         [StringLength(maximumLength: 11, MinimumLength = 11, ErrorMessage = "La longitud debe ser de 11 dígitos")]
         public string Cedula { get; set; } = string.Empty;
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime Fecha { get; set; }
+        public DateTime Fecha { get; set; } = DateTime.Now;
+        public string Estado { get; set; } = "Pendiente";
+        public string Observaciones { get; set; } = string.Empty;
 	}
 }
