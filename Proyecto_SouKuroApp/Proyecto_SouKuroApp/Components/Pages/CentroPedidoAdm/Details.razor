@@ -1,0 +1,100 @@
+﻿@page "/detallesPedidoCliente"
+@page "/detallesPedidoCliente/{PedidoId:int}"
+@inject CentroServices centroservice
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@using Shared.Models
+
+<div class="card">
+    <div class="card-header bg-danger text-light">
+        <h1 class="mb-0">Detalle</h1>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Detalles del Pedido</h5>
+        <dl class="row">
+            <dt class="col-sm-3">PedidoClienteId:</dt>
+            <dd class="col-sm-9">@CenPedido.PedidoClienteId</dd>
+
+            <dt class="col-sm-3">Nombre del Cliente</dt>
+            <dd class="col-sm-9">@CenPedido.Nombre_Cliente</dd>
+
+            <dt class="col-sm-3">Numero de Entrada:</dt>
+            <dd class="col-sm-9">@CenPedido.Numero_Entrada</dd>
+
+            <dt class="col-sm-3">Numero de Mesa:</dt>
+            <dd class="col-sm-9">@CenPedido.Num_Mesa</dd>
+
+            <dt class="col-sm-3">Estado de Factura:</dt>
+            <dd class="col-sm-9">@CenPedido.Estado_Entrega</dd>
+
+            <dt class="col-sm-3">Estado de Pago:</dt>
+            <dd class="col-sm-9">@CenPedido.Estado_Pago</dd>
+
+
+        </dl>
+    </div>
+
+    <table class='table table-bordered table-hover'>
+        <thead>
+            <tr>
+
+                <th>Nombre Producto</th>
+                <th>Cantidad</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detalle in listaDetalles)
+            {
+
+                <tr>
+
+                    <td>@detalle.Nombre_Produc</td>
+                    <td>@detalle.Cantidad</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="card-footer">
+        <a href="/cenPedAdm" class="btn btn-outline-primary bi bi bi-arrow-return-left"> Volver</a>
+        
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int PedidoId { get; set; }
+    public Centro_de_Pedidos CenPedido { get; set; } = new Centro_de_Pedidos();
+    public Centro_Detalle Detalles { get; set; } = new Centro_Detalle();
+    public List<Centro_Detalle> listaDetalles = new List<Centro_Detalle>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(500); // Espera opcional, si es necesario
+
+        CenPedido = await centroservice.GetCentroPed(PedidoId);
+
+        if (CenPedido != null)
+        {
+            if (CenPedido.Detalle != null)
+            {
+                listaDetalles = CenPedido.Detalle.ToList();
+            }
+            else
+            {
+                listaDetalles = new List<Centro_Detalle>();
+            }
+        }
+
+        Detalles = new Centro_Detalle(); // Inicializar Detalles
+    }
+    public async Task Buscar()
+    {
+        var pedidoEncontrado = await centroservice.Buscar(CenPedido.PedidoClienteId);
+
+        if (pedidoEncontrado != null)
+        {
+            this.CenPedido = pedidoEncontrado;
+        }
+    }   
+}
