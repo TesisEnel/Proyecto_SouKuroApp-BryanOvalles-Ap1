@@ -1,0 +1,76 @@
+﻿@page "/reservacionAdmDelete"
+@page "/reservacionAdmDelete/{ReservacionId:int}"
+@using Microsoft.AspNetCore.Authorization
+@using Shared.Models
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject ReservacionServices reservacionservices
+
+
+<div class="card">
+    <div class="card-header bg-danger text-light">
+        <h1 class="mb-0">¿Desea Eliminar esta Reservacion?</h1>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Reservacion</h5>
+        <dl class="row">
+            <dt class="col-sm-3">ReservacionId:</dt>
+            <dd class="col-sm-9">@reservacion.ReservacionId</dd>
+
+            <dt class="col-sm-3">Nombre Cliente</dt>
+            <dd class="col-sm-9">@reservacion.Nombre_Cliente</dd>
+
+
+            <dt class="col-sm-3">Cedula:</dt>
+            <dd class="col-sm-9">@reservacion.Cedula</dd>
+
+            <dt class="col-sm-3">Fecha:</dt>
+            <dd class="col-sm-9">@reservacion.Fecha</dd>
+
+
+
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a href="/reservacionAdm" class="btn btn-outline-primary bi bi bi-arrow-return-left"> Volver</a>
+        <button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int ReservacionId { get; set; }
+
+    public Reservacion reservacion { get; set; } = new Reservacion();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        reservacion = await reservacionservices.Buscar(ReservacionId);
+
+
+
+    }
+
+
+    public async Task Eliminar()
+    {
+        if (!await reservacionservices.Existe(reservacion.ReservacionId))
+        {
+            return;
+        }
+        if (await reservacionservices.Eliminar(this.reservacion))
+        {
+            Atras();
+        }
+
+    }
+
+    void Atras()
+    {
+        Navigation.NavigateTo("/reservacionAdm");
+    }
+
+}
