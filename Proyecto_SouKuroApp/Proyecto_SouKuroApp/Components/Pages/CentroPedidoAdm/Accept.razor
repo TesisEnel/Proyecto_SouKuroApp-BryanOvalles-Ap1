@@ -1,0 +1,68 @@
+﻿@page "/aceptarPedido"
+@page "/aceptarPedido/{PedidoId:int}"
+@inject CentroServices centroservice
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@using Shared.Models
+
+
+<div class="card">
+    <div class="card-header bg-danger text-light">
+        <h1 class="mb-0">¿Desea Aceptar este Pedido?</h1>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Detalles del Pedido</h5>
+        <dl class="row">
+            
+            <dt class="col-sm-3">PedidoId:</dt>
+            <dd class="col-sm-9">@CenPedido.PedidoClienteId</dd>
+
+            <dt class="col-sm-3">Numero de Entrada:</dt>
+            <dd class="col-sm-9">@CenPedido.Numero_Entrada</dd>
+            
+            <dt class="col-sm-3"># De Mesas:</dt>
+            <dd class="col-sm-9">@CenPedido.Num_Mesa</dd>
+            
+            <dt class="col-sm-3">Nombre:</dt>
+            <dd class="col-sm-9">@CenPedido.Nombre_Cliente</dd>
+
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a href="/cenPedAdm" class="btn btn-outline-primary bi bi bi-arrow-return-left"> Volver</a>
+        <button type="button" class="btn btn-outline-danger" @onclick="Guardar">Aceptar Pedido</button>
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int PedidoId { get; set; }
+    public Centro_de_Pedidos CenPedido { get; set; } = new Centro_de_Pedidos();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        CenPedido = await centroservice.Buscar(PedidoId);
+    }
+
+
+    public async Task Guardar()
+    {
+
+        CenPedido.Estado_Entrega = "Pedido Aceptado";
+
+        var guardo = await centroservice.Guardar(CenPedido);
+        if (guardo)
+        {
+            await Task.Delay(3000);
+            Atras();
+        }
+
+    }
+
+    void Atras()
+    {
+        Navigation.NavigateTo("/cenPedAdm");
+    }
+}
