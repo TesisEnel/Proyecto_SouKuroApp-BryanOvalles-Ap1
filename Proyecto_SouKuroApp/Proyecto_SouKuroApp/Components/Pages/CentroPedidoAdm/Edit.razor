@@ -1,0 +1,186 @@
+﻿@page "/pedidoClienteEdit"
+@page "/pedidoClienteEdit/{PedidoId:int}"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject CentroServices centroservice
+@using Shared.Models;
+
+<PageTitle>Edit</PageTitle>
+
+<EditForm Model="CenPedido" OnValidSubmit="Modificar" FormName="pedidoClienteEdit">
+	<DataAnnotationsValidator />
+	<div class="card">
+		<div class="card-header">
+			<h1>Editar Pedido </h1>
+		</div>
+		<div class=" card-body">
+			<label>PedidoClienteId</label>
+
+			<div class="input-group">
+				<InputNumber min="0" @bind-Value="CenPedido.PedidoClienteId" class="id-input" disabled readonly></InputNumber>
+			</div>
+			<div class="col-4">
+				<label>Ingrese su Nombre:</label>
+				<InputText @bind-Value="CenPedido.Nombre_Cliente" class="form-control"></InputText>
+				<ValidationMessage For="@(() => CenPedido.Nombre_Cliente)" />
+			</div>
+			<div class="col-4">
+				<label>Ingrese el Numero de Su Entrada:</label>
+				<InputNumber @bind-Value="CenPedido.Numero_Entrada" class="form-control"></InputNumber>
+				<ValidationMessage For="@(() => CenPedido.Numero_Entrada)" />
+			</div>
+			<div class="col-4">
+				<label>Ingrese su Numero de Mesa:</label>
+				<InputNumber @bind-Value="CenPedido.Num_Mesa" class="form-control"></InputNumber>
+				<ValidationMessage For="@(() => CenPedido.Num_Mesa)" />
+			</div>
+			<div class="col-4">
+				<label>Estado de Entrega:</label>
+				<InputText @bind-Value="CenPedido.Estado_Entrega" class="form-control"></InputText>
+				<ValidationMessage For="@(() => CenPedido.Estado_Entrega)" />
+			</div>
+			<div class="col-4">
+				<label>Estado de Pago:</label>
+				<InputText @bind-Value="CenPedido.Estado_Pago" class="form-control"></InputText>
+				<ValidationMessage For="@(() => CenPedido.Estado_Pago)" />
+			</div>
+		</div>
+		<div class="card-footer ">
+
+			<div class="card-footer">
+				<button type="submit" class="btn btn-outline-success">Guardar <i class="bi bi-floppy-fill" /></button>
+			</div>
+
+		</div>
+	</div>
+
+	@*Detalles:*@
+	<div class="card card-header mt-5">
+		<h3>Detalle del Pedido</h3>
+
+		<div class="row">
+			<div class="col">
+				<label class="fw-bold mt-3">Nombre del Producto</label>
+				<InputText @bind-Value="Detalles.Nombre_Produc" class="form-control"></InputText>
+				<ValidationMessage For="@(() => Detalles.Nombre_Produc)" />
+			</div>
+			<div class="col">
+				<label class="fw-bold mt-3">Cantidad del Producto</label>
+				<InputNumber @bind-Value="Detalles.Cantidad" class="form-control"></InputNumber>
+				<ValidationMessage For="@(() => Detalles.Cantidad)" />
+			</div>
+		</div>
+		<div class="card-footer d-flex justify-content-center">
+			<button type="button" @onclick="AgregarDetalle" class="btn btn-outline-success">Agregar</button>
+		</div>
+		<table class='table table-bordered table-hover'>
+			<thead>
+				<tr>
+
+					<th>Nombre Producto</th>
+					<th>Cantidad</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var detalle in listaDetalles)
+				{
+
+					<tr>
+
+						<td>@detalle.Nombre_Produc</td>
+						<td>@detalle.Cantidad</td>
+						<td><button type="button" class="btn btn-outline-danger bi bi-trash-fill" @onclick=@(() => RemoverDetalle(detalle))>Eliminar</button></td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</EditForm>
+
+
+<div class="card-footer">
+	<a href="/cenPedAdm" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+
+</div>
+
+
+@code {
+
+	[Parameter]
+	public int PedidoId { get; set; }
+	public Centro_de_Pedidos CenPedido { get; set; } = new Centro_de_Pedidos();
+	public Centro_Detalle Detalles { get; set; } = new Centro_Detalle();
+	public List<Centro_Detalle> listaDetalles = new List<Centro_Detalle>();
+	public string Mensaje = " ";
+	private bool Existe = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+
+		if (PedidoId > 0)
+		{
+			CenPedido = await centroservice.GetCentroPed(PedidoId);
+			if (CenPedido != null)
+			{
+				listaDetalles = CenPedido.Detalle.ToList();
+			}
+			else
+			{
+				Navigation.NavigateTo("/Error");
+			}
+		}
+		// Inicializar Detalles
+		Detalles = new Centro_Detalle();
+	}
+
+
+	/* public async Task Buscar()
+		{
+			var compraEncontrado = await compraservice.Buscar(compra.CompraId);
+
+			if (compraEncontrado != null)
+			{
+				this.compra = compraEncontrado;
+			}
+		}*/
+	public async Task Modificar()
+	{
+		var guardo = await centroservice.Modificar(CenPedido);
+		if (guardo)
+		{
+			await Task.Delay(500);
+			Navigation.NavigateTo("/cenPedAdm");
+		}
+
+	}
+
+	/* public async Task<bool> Validar()
+		{
+			Existe = (await compraservice.Listar(m => m.NFC!.ToLower() == compra.NFC!.ToLower()
+			&& m.CompraId != compra.CompraId)).Any();
+
+			return Existe;
+		}*/
+
+	void Atras()
+	{
+		Navigation.NavigateTo("/cenPedAdm");
+	}
+
+	public async Task AgregarDetalle()
+	{
+		if (CenPedido != null)
+		{
+			Detalles.PedidoId = CenPedido.PedidoClienteId;
+			listaDetalles.Add(Detalles);
+			CenPedido.Detalle.Add(Detalles);
+		}
+	}
+
+	public async Task RemoverDetalle(Centro_Detalle details)
+	{
+		Detalles = details;
+		listaDetalles.Remove(details);
+	}
+}
