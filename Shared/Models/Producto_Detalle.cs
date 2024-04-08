@@ -13,7 +13,6 @@ public class Producto_Detalle
     [Key]
     public int Id { get; set; }
     public int ProductoId { get; set; }
-    [Required]
     public string Categoria { get; set; } = string.Empty;    
 
 }

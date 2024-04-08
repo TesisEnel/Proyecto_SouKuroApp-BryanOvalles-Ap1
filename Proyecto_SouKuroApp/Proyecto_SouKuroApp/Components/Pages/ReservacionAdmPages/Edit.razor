@@ -1,0 +1,63 @@
+﻿@page "/reservacionAdmEdit"
+@page "/reservacionAdmEdit/{ReservacionId:int}"
+@using Microsoft.AspNetCore.Authorization
+@using Shared.Models
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject ReservacionServices reservacionservices
+
+<EditForm Model="reservacion" OnValidSubmit="Modificar" FormName="reservacionAdmEdit">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="text-danger" />
+
+    <div class="mb-3">
+        <label for="nombre" class="form-label">Ingrese el Nombre:</label>
+        <InputText id="nombre" @bind-Value="reservacion.Nombre_Cliente" class="form-control" />
+        <ValidationMessage For="() => reservacion.Nombre_Cliente" class="text-danger" />
+    </div>
+    <div class="mb-3">
+        <label for="cedu" class="form-label">Ingrese su numero de Cedula:</label>
+        <InputText id="cedu" @bind-Value="reservacion.Cedula" class="form-control" />
+        <ValidationMessage For="() => reservacion.Cedula" class="text-danger" />
+    </div>
+    <div class="mb-3">
+        <label for="fecha" class="form-label">Elija su fecha de Reservacion:</label>
+        <InputDate id="fecha" @bind-Value="reservacion.Fecha" class="form-control" />
+        <ValidationMessage For="() => reservacion.Fecha" class="text-danger" />
+    </div>
+
+
+    <div class="card-footer">
+        <a href="/reservacionAdm" class="btn btn-outline-danger bi bi-house-door-fill"> Volver</a>
+        <button type="submit" class="btn btn-primary">Crear</button>
+    </div>
+
+</EditForm>
+@code {
+    [Parameter]
+    public int ReservacionId { get; set; }
+    public Reservacion reservacion { get; set; } = new Reservacion();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ReservacionId > 0)
+        {
+            reservacion = await reservacionservices.Buscar(ReservacionId);
+        }
+    }
+
+    public async Task Modificar()
+    {
+        var guardo = await reservacionservices.Modificar(reservacion);
+        if (guardo)
+        {
+            await Task.Delay(500);
+            Atras();
+        }
+    }
+
+    void Atras()
+    {
+        Navigation.NavigateTo("/reservacionAdm");
+    }
+}

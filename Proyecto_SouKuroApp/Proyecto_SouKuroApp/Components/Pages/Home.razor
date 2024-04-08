@@ -1,134 +1,134 @@
-﻿﻿
 @page "/MenuViejo"
 @using Microsoft.AspNetCore.Authorization
 
 @attribute [Authorize]
 <PageTitle>Home</PageTitle>
-<AuthorizeView Roles="Admin">
 
+<AuthorizeView Roles="Admin" >
 
-	<Authorized>
+   
+    <Authorized  >
 
-		<div class="card mx-auto shadow-lg" style="max-width:1000px">
-			<div class="card-header d-flex align-items-center justify-content-center">
-				<img src="Logo.png" class="img-logo" />
-				<h2>Piscina Campestre -Menu-</h2>
-			</div>
-			<div class="card-body" style="background-color: #ffff; background-size: cover;">
-				<div class="row justify-content-center">
-					<div class="col-md-4 text-center">
-						<a href="/compras">
-							<div class="menu-item">
-								<img src="Icon/Compras.png" class="icon" />
-								<p>Compras</p>
-							</div>
-						</a>
-					</div>
-					<div class="col-md-4 text-center">
-						<a href="/venta">
-							<div class="menu-item">
-								<img src="Icon/Venta.png" class="icon" />
-								<p>Ventas</p>
-							</div>
-						</a>
-					</div>
-					<div class="col-md-4 text-center mb-4">
-						<a href="/informe">
-							<div class="menu-item">
-								<img src="Icon/Informe.png" class="icon" />
-								<p>Informes</p>
-							</div>
-						</a>
-					</div>
-					<div class="col-md-4 text-center mb-4">
-						<a href="/pago">
-							<div class="menu-item">
-								<img src="Icon/Pago.png" class="icon" />
-								<p>Pagos</p>
-							</div>
-						</a>
-					</div>
-					<div class="col-md-4 text-center mb-4">
-						<a href="/proveedor">
-							<div class="menu-item">
-								<img src="Icon/Proveedor.png" class="icon" />
-								<p>Proveedores</p>
-							</div>
-						</a>
-					</div>
-					<div class="col-md-4 text-center mb-4">
-						<a href="/producto">
-							<div class="menu-item">
-								<img src="Icon/Producto.png" class="icon" />
-								<p>Productos</p>
-							</div>
-						</a>
-					</div>
-					<div class="col-md-4 text-center mb-4">
-						<a href="/pedido">
-							<div class="menu-item">
-								<img src="Icon/Pedido.png" class="icon" />
-								<p>Pedidos</p>
-							</div>
-						</a>
-					</div>
-					<div class="col-md-4 text-center">
-						<a href="/usuario">
-							<div class="menu-item">
-								<img src="Icon/User.png" class="icon" />
-								<p>Usuarios</p>
-							</div>
-						</a>
-					</div>
+        <div class="card mx-auto shadow-lg" style="max-width:1000px" >
+            <div class="card-header d-flex align-items-center justify-content-center">
+                <img src="Logo.png" class="img-logo" />
+                <h2>Piscina Campestre -Menu-</h2>
+            </div>
+            <div class="card-body" style="background-color: #ffff; background-size: cover;">
+                <div class="row justify-content-center">
+                    <div class="col-md-4 text-center">
+                        <a href="/compras">
+                            <div class="menu-item">
+                                <img src="Icon/Compras.png" class="icon" />
+                                <p>Compras</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <a href="/venta">
+                            <div class="menu-item">
+                                <img src="Icon/Venta.png" class="icon" />
+                                <p>Ventas</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 text-center mb-4">
+                        <a href="/informe">
+                            <div class="menu-item">
+                                <img src="Icon/Informe.png" class="icon" />
+                                <p>Informes</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 text-center mb-4">
+                        <a href="/pago">
+                            <div class="menu-item">
+                                <img src="Icon/Pago.png" class="icon" />
+                                <p>Pagos</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 text-center mb-4">
+                        <a href="/proveedor">
+                            <div class="menu-item">
+                                <img src="Icon/Proveedor.png" class="icon" />
+                                <p>Proveedores</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 text-center mb-4">
+                        <a href="/producto">
+                            <div class="menu-item">
+                                <img src="Icon/Producto.png" class="icon" />
+                                <p>Productos</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 text-center mb-4">
+                        <a href="/pedido">
+                            <div class="menu-item">
+                                <img src="Icon/Pedido.png" class="icon" />
+                                <p>Pedidos</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <a href="/usuario">
+                            <div class="menu-item">
+                                <img src="Icon/User.png" class="icon" />
+                                <p>Usuarios</p>
+                            </div>
+                        </a>
+                    </div>
 
-					<div class="col-md-4 text-center">
-						<a href="/">
-							<div class="menu-item">
-								<img src="Icon/User.png" class="icon" />
-								<p>Centro de Pedido </p>
-							</div>
-						</a>
-					</div>
-					<div class="col-md-4 text-center">
-						<a href="/">
-							<div class="menu-item">
-								<img src="Icon/User.png" class="icon" />
-								<p>Reservaciones</p>
-							</div>
-						</a>
-					</div>
-
-				</div>
-			</div>
-		</div>
-	</Authorized>
-	<NotAuthorized>
-		<div class="card mx-auto shadow-lg" style="max-width:1000px">
-			<div class="card-header d-flex align-items-center justify-content-center">
-				<img src="Logo.png" class="img-logo" />
-				<h2>Piscina Campestre -Menu-</h2>
-			</div>
-			<div class="card-body" style="background-color: #ffff; background-size: cover;">
-				<div class="col-md-4 text-center">
-					<a href="/cenPedCli">
-						<div class="menu-item">
-							<img src="Icon/User.png" class="icon" />
-							<p>Centro de Pedido </p>
-						</div>
-					</a>
-				</div>
-				<div class="col-md-4 text-center">
-					<a href="/reservacionCli">
-						<div class="menu-item">
-							<img src="Icon/User.png" class="icon" />
-							<p>Reservaciones</p>
-						</div>
-					</a>
-				</div>
-			</div>
-		</div>
-	</NotAuthorized>
-
+                    <div class="col-md-4 text-center">
+                        <a href="/cenPedAdm">
+                            <div class="menu-item">
+                                <img src="Icon/User.png" class="icon" />
+                                <p>Centro de Pedido </p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <a href="/reservacionAdm">
+                            <div class="menu-item">
+                                <img src="Icon/User.png" class="icon" />
+                                <p>Reservaciones</p>
+                            </div>
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="card mx-auto shadow-lg" style="max-width:1000px" >
+            <div class="card-header d-flex align-items-center justify-content-center">
+                <img src="Logo.png" class="img-logo" />
+                <h2>Piscina Campestre -Menu-</h2>
+            </div>
+            <div class="card-body" style="background-color: #ffff; background-size: cover;">
+                    <div class="col-md-4 text-center">
+                    <a href="/cenPedCli">
+                            <div class="menu-item">
+                                <img src="Icon/User.png" class="icon" />
+                                <p>Centro de Pedido </p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 text-center">
+                    <a href="/reservacionCli">
+                            <div class="menu-item">
+                                <img src="Icon/User.png" class="icon" />
+                                <p>Reservaciones</p>
+                            </div>
+                        </a>
+                    </div>
+            </div>
+        </div>
+    </NotAuthorized>
+    
 </AuthorizeView>
 
 

@@ -12,8 +12,8 @@ using Proyecto_SouKuroApp.Data;
 namespace Proyecto_SouKuroApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240403232442_ParteCliente")]
-    partial class ParteCliente
+    [Migration("20240408040821_OnModel")]
+    partial class OnModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -246,7 +246,8 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     b.Property<string>("Nombre_Produc")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("PedidoId")
                         .HasColumnType("int");
@@ -260,11 +261,11 @@ namespace Proyecto_SouKuroApp.Migrations
 
             modelBuilder.Entity("Shared.Models.Centro_de_Pedidos", b =>
                 {
-                    b.Property<int>("PedidoId")
+                    b.Property<int>("PedidoClienteId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PedidoId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PedidoClienteId"));
 
                     b.Property<string>("Estado_Entrega")
                         .IsRequired()
@@ -276,7 +277,8 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     b.Property<string>("Nombre_Cliente")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("Num_Mesa")
                         .HasColumnType("int");
@@ -284,7 +286,7 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.Property<int>("Numero_Entrada")
                         .HasColumnType("int");
 
-                    b.HasKey("PedidoId");
+                    b.HasKey("PedidoClienteId");
 
                     b.ToTable("centro_de_Pedidos");
                 });
@@ -306,10 +308,6 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.Property<decimal>("ITBIS")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("NFC")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("No_Compra")
                         .HasColumnType("int");
 
@@ -318,7 +316,8 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
@@ -347,7 +346,8 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     b.Property<string>("Nombre_Producto")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -363,6 +363,9 @@ namespace Proyecto_SouKuroApp.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InformeId"));
+
+                    b.Property<int>("CompraId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Fecha_Final")
                         .HasColumnType("datetime2");
@@ -389,6 +392,9 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PagoId"));
 
+                    b.Property<int>("CompraId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Estado")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -399,9 +405,6 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.Property<string>("Metodo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Monto")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("PagoId");
 
@@ -440,13 +443,10 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductoId"));
 
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<decimal>("Precio")
                         .HasColumnType("decimal(18,2)");
@@ -457,6 +457,134 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.HasKey("ProductoId");
 
                     b.ToTable("productos");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductoId = 1,
+                            Nombre = "CocaCola",
+                            Precio = 30m,
+                            Stock = 89
+                        },
+                        new
+                        {
+                            ProductoId = 2,
+                            Nombre = "Pepsi",
+                            Precio = 30m,
+                            Stock = 89
+                        },
+                        new
+                        {
+                            ProductoId = 3,
+                            Nombre = "Jugo Rica",
+                            Precio = 70m,
+                            Stock = 189
+                        },
+                        new
+                        {
+                            ProductoId = 4,
+                            Nombre = "Jugo Mots",
+                            Precio = 90m,
+                            Stock = 69
+                        },
+                        new
+                        {
+                            ProductoId = 5,
+                            Nombre = "Fanta",
+                            Precio = 25m,
+                            Stock = 89
+                        },
+                        new
+                        {
+                            ProductoId = 6,
+                            Nombre = "Hamburguesa",
+                            Precio = 300m,
+                            Stock = 40
+                        },
+                        new
+                        {
+                            ProductoId = 7,
+                            Nombre = "Hot Dog",
+                            Precio = 70m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 8,
+                            Nombre = "Pizza",
+                            Precio = 270m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 9,
+                            Nombre = "Yaroa",
+                            Precio = 200m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 10,
+                            Nombre = "Lays",
+                            Precio = 35m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 11,
+                            Nombre = "Doritos",
+                            Precio = 30m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 12,
+                            Nombre = "Tostitos",
+                            Precio = 250m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 13,
+                            Nombre = "Taqueritos",
+                            Precio = 20m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 14,
+                            Nombre = "Chokis",
+                            Precio = 40m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 15,
+                            Nombre = "Brugal Blanco",
+                            Precio = 500m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 16,
+                            Nombre = "Brugal Extra viejo",
+                            Precio = 700m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 17,
+                            Nombre = "Cervesa Presidente",
+                            Precio = 140m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 18,
+                            Nombre = "Corona",
+                            Precio = 120m,
+                            Stock = 29
+                        });
                 });
 
             modelBuilder.Entity("Shared.Models.Producto_Detalle", b =>
@@ -479,6 +607,32 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.HasIndex("ProductoId");
 
                     b.ToTable("producto_Detalles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Categoria = "Bebidas",
+                            ProductoId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Categoria = "Comida",
+                            ProductoId = 6
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Categoria = "Snacks",
+                            ProductoId = 10
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Categoria = "Bebidas Alcoholicas",
+                            ProductoId = 14
+                        });
                 });
 
             modelBuilder.Entity("Shared.Models.Proveedor", b =>
@@ -499,11 +653,13 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("ProveedorId");
 
@@ -520,14 +676,16 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     b.Property<string>("Cedula")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nombre_Cliente")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("ReservacionId");
 
@@ -548,7 +706,8 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     b.Property<string>("Nombre_Usuario")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Rol")
                         .IsRequired()
@@ -573,6 +732,11 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.Property<string>("NombreCliente")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nombre_Usuario")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("VentaId");
 

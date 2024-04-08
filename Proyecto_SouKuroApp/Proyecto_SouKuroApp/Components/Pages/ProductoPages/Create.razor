@@ -36,11 +36,6 @@
 				<InputNumber id="stock" @bind-Value="producto.Stock" class="form-control" />
 				<ValidationMessage For="() => producto.Stock" class="text-danger" />
 			</div>
-			<div class="mb-3">
-				<label for="descripcion" class="form-label">Descripci&oacute;n:</label>
-				<InputText id="descripcion" @bind-Value="producto.Descripcion" class="form-control" />
-				<ValidationMessage For="() => producto.Descripcion" class="text-danger" />
-			</div>
 			<button type="submit" class="btn btn-primary">Create</button>
 
 			<div class="card card-header mt-5">

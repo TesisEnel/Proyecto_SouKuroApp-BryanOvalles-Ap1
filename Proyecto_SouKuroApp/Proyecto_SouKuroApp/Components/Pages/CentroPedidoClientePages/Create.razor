@@ -1,5 +1,4 @@
 ﻿@page "/cenPedCli/create"
-
 @using Proyecto_SouKuroApp.Data
 @using Shared.Models;
 @inject CentroServices centroservice
@@ -15,168 +14,178 @@
 @*<div class="row">
     <div class="col-md-4">*@
 <EditForm Model="CenPedido" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator />
-    <div class="card">
-        <div class="card-header">
-         
-        </div>
-        <div class=" card-body">
-            <label>Pedido Id</label>
+	<DataAnnotationsValidator />
+	<div class="card">
+		<div class="card-header">
+			Centro de Pedidos
+		</div>
+		<div class=" card-body">
+			<label>Pedido Id</label>
 
-            <div class="input-group">
-                <InputNumber min="0" @bind-Value="CenPedido.PedidoId" class="id-input" ></InputNumber>
-            </div>
-            <div>
-                <label>Ingrese su Nombre:</label>
-                <InputText @bind-Value="CenPedido.Nombre_Cliente" class="form-control"></InputText>
-                <ValidationMessage For="@(() => CenPedido.Nombre_Cliente)" />
-            </div>
+			<div class="input-group">
+				<InputNumber min="0" @bind-Value="CenPedido.PedidoClienteId" class="id-input" disabled readonly></InputNumber>
+			</div>
+			<form class="row g-5">
 
-            <div>
-                <label>Ingrese el Numero de Su Entrada:</label>
-                <InputNumber @bind-Value="CenPedido.Numero_Entrada" class="form-control"></InputNumber>
-                <ValidationMessage For="@(() => CenPedido.Numero_Entrada)" />
-            </div>
-            <div>
-                <label>Ingrese su Numero de Mesa:</label>
-                <InputNumber @bind-Value="CenPedido.Num_Mesa" class="form-control"></InputNumber>
-                <ValidationMessage For="@(() => CenPedido.Numero_Entrada)" />
-            </div>
-            
-            
-        </div>
-        <button type="submit" class="btn btn-primary">Create</button>
+				<div class="col-4">
+					<label>Ingrese su Nombre:</label>
+					<InputText @bind-Value="CenPedido.Nombre_Cliente" class="form-control"></InputText>
+					<ValidationMessage For="@(() => CenPedido.Nombre_Cliente)" />
+				</div>
+				<div class="col-4">
+					<label>Ingrese el Numero de Su Entrada:</label>
+					<InputNumber @bind-Value="CenPedido.Numero_Entrada" class="form-control"></InputNumber>
+					<ValidationMessage For="@(() => CenPedido.Numero_Entrada)" />
+				</div>
+				<div class="col-4">
+					<label>Ingrese su Numero de Mesa:</label>
+					<InputNumber @bind-Value="CenPedido.Num_Mesa" class="form-control"></InputNumber>
+					<ValidationMessage For="@(() => CenPedido.Num_Mesa)" />
+				</div>
+			</form>
+			<br>
+			<div class="d-flex justify-content-center">
+				<div class="alert alert-danger" role="alert">
+					Ten en Cuenta que este pedido no se podra editar una vez creado, para modificar el pedido acercarse a la cafeteria o hablar con la camarera responsable
+				</div>
+			</div>
 
-        @*Detalles:*@
-        <div class="card card-header mt-5">
-            <h3>Detalle de Compra</h3>
 
-            <div class="row">
-               
-                <div class="col">
-                    <label class="fw-bold mt-3">Nombre del Producto</label>
-                    <InputText @bind-Value="Detalles.Nombre_Produc" class="form-control"></InputText>
-                    <ValidationMessage For="@(() => Detalles.Nombre_Produc)" />
-                </div>
-                <div class="col">
-                    <label class="fw-bold mt-3">Cantidad del Producto</label>
-                    <InputNumber @bind-Value="Detalles.Cantidad" class="form-control"></InputNumber>
-                    <ValidationMessage For="@(() => Detalles.Cantidad)" />
-                </div>
-            </div>
-            <div class="card-footer d-flex justify-content-center">
-                <button type="button" @onclick="AgregarDetalle" class="btn btn-outline-success">Agregar</button>
-            </div>
-            <table class='table table-bordered table-hover'>
-                <thead>
-                    <tr>
+		</div>
+		<div class="d-flex justify-content-center">
+			<button type="submit" class="btn btn-primary">Create</button>
+		</div>
 
-                        <th>Nombre Producto</th>
-                        <th>Cantidad</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var detalle in listaDetalles)
-                    {
+		@*Detalles:*@
+		<div class="card card-header mt-5">
+			<h3>Detalle de Compra</h3>
 
-                        <tr>
+			<div class="row">
 
-                            <td>@detalle.Nombre_Produc</td>
-                            <td>@detalle.Cantidad</td>
-                            <td><button type="button" class="btn btn-outline-danger bi bi-trash-fill" @onclick=@(() => RemoverDetalle(detalle))>Eliminar</button></td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+				<div class="col">
+					<label class="fw-bold mt-3">Nombre del Producto</label>
+					<InputText @bind-Value="Detalles.Nombre_Produc" class="form-control"></InputText>
+					<ValidationMessage For="@(() => Detalles.Nombre_Produc)" />
+				</div>
+				<div class="col">
+					<label class="fw-bold mt-3">Cantidad del Producto</label>
+					<InputNumber @bind-Value="Detalles.Cantidad" class="form-control"></InputNumber>
+					<ValidationMessage For="@(() => Detalles.Cantidad)" />
+				</div>
+			</div>
+			<div class="card-footer d-flex justify-content-center">
+				<button type="button" @onclick="AgregarDetalle" class="btn btn-outline-success">Agregar</button>
+			</div>
+			<table class='table table-bordered table-hover'>
+				<thead>
+					<tr>
+
+						<th>Nombre Producto</th>
+						<th>Cantidad</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var detalle in listaDetalles)
+					{
+
+						<tr>
+
+							<td>@detalle.Nombre_Produc</td>
+							<td>@detalle.Cantidad</td>
+							<td><button type="button" class="btn btn-outline-danger bi bi-trash-fill" @onclick=@(() => RemoverDetalle(detalle))>Eliminar</button></td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
 </EditForm>
 
 
 @code {
-    [Parameter]
-    public int CenPedidoId { get; set; }
-    public Centro_de_Pedidos CenPedido { get; set; } = new Centro_de_Pedidos();
-    public List<Centro_de_Pedidos> ListaCenPedido { get; set; } = new List<Centro_de_Pedidos>();
+	[Parameter]
+	public int CenPedidoId { get; set; }
+	public Centro_de_Pedidos CenPedido { get; set; } = new Centro_de_Pedidos();
+	public List<Centro_de_Pedidos> ListaCenPedido { get; set; } = new List<Centro_de_Pedidos>();
 
-    public Centro_Detalle Detalles { get; set; } = new Centro_Detalle();
-    public List<Centro_Detalle> listaDetalles = new List<Centro_Detalle>();
-
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (CenPedidoId > 0)
-        {
-            this.CenPedido = await centroservice.GetCentroPed(CenPedidoId);
-            if (this.CenPedido != null)
-            {
-                await this.Buscar();
-            }
-            else
-            {
-                Navigation.NavigateTo("/Error");
-            }
-        }
+	public Centro_Detalle Detalles { get; set; } = new Centro_Detalle();
+	public List<Centro_Detalle> listaDetalles = new List<Centro_Detalle>();
 
 
-
-        // Inicializar los detalles de la compra si es necesario
-        if (CenPedido.Detalle == null)
-              {
-              CenPedido.Detalle = new List<Centro_Detalle>();
-          }
-    }
-
-
-    public async Task Buscar()
-    {
-        var compraEncontrado = await centroservice.Buscar(CenPedido.PedidoId);
-
-        if (compraEncontrado != null)
-        {
-            this.CenPedido = compraEncontrado;
-        }
-    }
-    public async Task Guardar()
-    {
-
-        CenPedido.Estado_Entrega = "Procesando pedido";
-        CenPedido.Estado_Pago = "No Pago";
-
-        var guardo = await centroservice.Guardar(CenPedido);
-        if (guardo)
-        {
-
-            await Task.Delay(3000);
-            Atras();
-        }
-
-    }
-    void Atras()
-    {
-        Navigation.NavigateTo("/cenPedCli");
-    }
-
-    public async Task AgregarDetalle()
-    {
-        if (CenPedido != null)
-        {
-
-            Detalles.PedidoId = CenPedido.PedidoId;
-         
-            listaDetalles.Add(Detalles);
-            CenPedido.Detalle.Add(Detalles);
-            
-        }
-    }
-
-    public async Task RemoverDetalle(Centro_Detalle details)
-    {
+	protected override async Task OnInitializedAsync()
+	{
+		if (CenPedidoId > 0)
+		{
+			this.CenPedido = await centroservice.GetCentroPed(CenPedidoId);
+			if (this.CenPedido != null)
+			{
+				await this.Buscar();
+			}
+			else
+			{
+				Navigation.NavigateTo("/Error");
+			}
+		}
 
 
-        Detalles = details;
-      
-        listaDetalles.Remove(details);
-    }
+
+		// Inicializar los detalles de la compra si es necesario
+		if (CenPedido.Detalle == null)
+		{
+			CenPedido.Detalle = new List<Centro_Detalle>();
+		}
+	}
+
+
+	public async Task Buscar()
+	{
+		var compraEncontrado = await centroservice.Buscar(CenPedido.PedidoClienteId);
+
+		if (compraEncontrado != null)
+		{
+			this.CenPedido = compraEncontrado;
+		}
+	}
+	public async Task Guardar()
+	{
+
+		CenPedido.Estado_Entrega = "Procesando pedido";
+		CenPedido.Estado_Pago = "No Pago";
+
+		var guardo = await centroservice.Guardar(CenPedido);
+		if (guardo)
+		{
+
+			await Task.Delay(3000);
+			Atras();
+		}
+
+	}
+	void Atras()
+	{
+		Navigation.NavigateTo("/cenPedCli");
+	}
+
+	public async Task AgregarDetalle()
+	{
+		if (CenPedido != null)
+		{
+
+			Detalles.PedidoId = CenPedido.PedidoClienteId;
+
+			listaDetalles.Add(Detalles);
+			CenPedido.Detalle.Add(Detalles);
+
+		}
+	}
+
+	public async Task RemoverDetalle(Centro_Detalle details)
+	{
+
+
+		Detalles = details;
+
+		listaDetalles.Remove(details);
+	}
 }
