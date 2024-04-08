@@ -11,7 +11,6 @@
 <div class="card">
     <div class="card-header">
         <h3>Informe</h3>
-        <a href="/informeCreate" class="btn btn-outline-primary bi bi-plus-square">  Crear</a>
     </div>
 
     <div class="card-body">
@@ -84,19 +83,16 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in ListaInforme)
+                @foreach (var item in ListaCompra)
                 {
                     <tr>
-                        <td class="text-center">@item.InformeId</td>
-                        <td class="text-center">@item.Fecha_Inicio.ToShortDateString()</td>
-                        <td class="text-center">@item.Fecha_Final.ToShortDateString()</td>
-                        <td class="text-center">@item.Total_Compras.ToString("N2")</td>
-                        <td class="text-center">@item.Gastado.ToString("N2")</td>
+                        <td class="text-center">@item.PedidoClienteId</td>
+                        <td class="text-center">@item.Num_Mesa.ToString("N2")</td>
 
                         <td>
-                            <a href="/deleteInforme/@item.InformeId" class="btn btn-danger bi bi-trash-fill">Delete</a>
-                            <a href="/informeEdit/@item.InformeId" class="btn btn-primary bi-box-arrow-up-right">Edit</a>
-                            <a href="/detailsInforme/@item.InformeId" class="btn btn-success bi-box-arrow-up-right">Detalles</a>
+                            <a href="/deleteInforme/@item.PedidoClienteId" class="btn btn-danger bi bi-trash-fill">Delete</a>
+                            <a href="/informeEdit/@item.PedidoClienteId class="btn btn-primary bi-box-arrow-up-right">Edit</a>
+                            <a href="/detailsInforme/@item.PedidoClienteId" class="btn btn-success bi-box-arrow-up-right">Detalles</a>
 
                         </td>
                     </tr>
@@ -115,6 +111,7 @@
     public int InformeId { get; set; }
     public Informe informe { get; set; } = new Informe();
     public List<Informe> ListaInforme { get; set; } = new List<Informe>();
+    public List<Centro_de_Pedidos> ListaCompra { get; set; } = new List<Centro_de_Pedidos>();
 
     public int Opcion = 0;
 

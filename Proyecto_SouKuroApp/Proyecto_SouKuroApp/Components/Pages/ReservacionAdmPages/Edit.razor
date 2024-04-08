@@ -25,6 +25,23 @@
         <InputDate id="fecha" @bind-Value="reservacion.Fecha" class="form-control" />
         <ValidationMessage For="() => reservacion.Fecha" class="text-danger" />
     </div>
+    <div>
+        <label for="estado" class="form-label">Estado de la Reservacion:</label>
+		<InputSelect id="estado" @bind-Value="reservacion.Estado" class="form-control">
+			<option value="Pendiente">Pendiente</option>
+			<option value="Aceptada">Aceptada</option>
+			<option value="Rechazada">Rechazada</option>
+		</InputSelect>
+		<ValidationMessage For="() => reservacion.Estado" class="text-danger" />
+    </div>
+    @if (reservacion.Estado == "Rechazada")
+    {
+        <div class="mb-3">
+			<label for="razon" class="form-label">Razon de Rechazo:</label>
+			<InputText id="razon" @bind-Value="reservacion.Observaciones" class="form-control" />
+			<ValidationMessage For="() => reservacion.Observaciones" class="text-danger" />
+		</div>
+    }
 
 
     <div class="card-footer">

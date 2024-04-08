@@ -20,6 +20,7 @@
                     <th scope="col" class="text-center">Nombre</th>
                     <th scope="col" class="text-center">Cedula</th>
                     <th scope="col" class="text-center">Fecha reservacion</th>
+                    <th scope="col" class="text-center">Estado de la Reservaci&oacute;n</th>
                     
 
                     <th></th>
@@ -33,11 +34,10 @@
                         <td class="text-center">@item.Nombre_Cliente</td>
                         <td class="text-center">@item.Cedula</td>
                         <td class="text-center">@item.Fecha</td>
-                       
+                        <td class="text-center">@item.Estado</td>
                         <td>
                             <a href="/reservacionAdmEdit/@item.ReservacionId" class="btn btn-primary bi-box-arrow-up-right">Editar</a>
                             <a href="/reservacionAdmDelete/@item.ReservacionId" class="btn btn-primary bi-box-arrow-up-right">Delete</a>
-                           
                         </td>
                     </tr>
                 }

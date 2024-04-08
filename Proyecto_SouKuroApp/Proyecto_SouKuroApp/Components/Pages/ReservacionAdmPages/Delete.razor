@@ -20,14 +20,17 @@
             <dt class="col-sm-3">Nombre Cliente</dt>
             <dd class="col-sm-9">@reservacion.Nombre_Cliente</dd>
 
-
             <dt class="col-sm-3">Cedula:</dt>
             <dd class="col-sm-9">@reservacion.Cedula</dd>
 
             <dt class="col-sm-3">Fecha:</dt>
             <dd class="col-sm-9">@reservacion.Fecha</dd>
 
+            <dt class="col-sm-3">Estado:</dt>
+            <dd class="col-sm-9">@reservacion.Estado</dd>
 
+            <dt class="col-sm-3">Observaciones:</dt>
+            <dd class="col-sm-9">@reservacion.Observaciones</dd>
 
         </dl>
     </div>
@@ -47,11 +50,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-
         reservacion = await reservacionservices.Buscar(ReservacionId);
-
-
-
     }
 
 
