@@ -1,0 +1,71 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
+<PageTitle>Home</PageTitle>
+
+<AuthorizeView Roles="Admin">
+	<Authorized>
+		<div class="card-body">
+			<ul class="nav nav-pills nav-justified">
+				<li class="nav-item">
+					<a class="nav-link " aria-current="page" href="/">Reservaciones</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/cenPediAdmin">Centro Pedido</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/compras">Compras</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/venta">Ventas</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link " href="/informe" tabindex="-1" aria-disabled="true">Informes</a>
+				</li>
+			</ul>
+			<br>
+			<ul class="nav nav-pills nav-justified">
+				<li class="nav-item">
+					<a class="nav-link " aria-current="page" href="/pago">Pago</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/proveedor">Proveedor</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/producto">Producto</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/pedido">Pedido</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link " href="/usuario" tabindex="-1" aria-disabled="true">Usuario</a>
+				</li>
+			</ul>
+		</div>
+		<div class="card-body bg-white text-black">
+			<img src="Logo.png" class="card-img" alt="...">
+		</div>
+	</Authorized>
+
+	<NotAuthorized>
+		<div class="card-body">
+			<ul class="nav nav-pills nav-justified">
+				<li class="nav-item">
+					<a class="nav-link " aria-current="page" href="/ReservacionCli">Reservaciones</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/cenPedCli">Centro Pedido</a>
+				</li>
+			</ul>
+			<div class="card-body bg-white text-black">
+				<img src="Logo.png" class="card-img" alt="...">
+			</div>
+		</div>
+	</NotAuthorized>
+
+</AuthorizeView>
+
+
+
+
