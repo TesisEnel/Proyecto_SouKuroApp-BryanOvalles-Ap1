@@ -12,8 +12,8 @@ using Proyecto_SouKuroApp.Data;
 namespace Proyecto_SouKuroApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240401163638_Second")]
-    partial class Second
+    [Migration("20240408023525_Actualizando Tablas")]
+    partial class ActualizandoTablas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -230,6 +230,67 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Shared.Models.Centro_Detalle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Centro_de_Pedidos")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nombre_Produc")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("PedidoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Centro_de_Pedidos");
+
+                    b.ToTable("centro_Detalle");
+                });
+
+            modelBuilder.Entity("Shared.Models.Centro_de_Pedidos", b =>
+                {
+                    b.Property<int>("PedidoClienteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PedidoClienteId"));
+
+                    b.Property<string>("Estado_Entrega")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Estado_Pago")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nombre_Cliente")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("Num_Mesa")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Numero_Entrada")
+                        .HasColumnType("int");
+
+                    b.HasKey("PedidoClienteId");
+
+                    b.ToTable("centro_de_Pedidos");
+                });
+
             modelBuilder.Entity("Shared.Models.Compra", b =>
                 {
                     b.Property<int>("CompraId")
@@ -247,10 +308,6 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.Property<decimal>("ITBIS")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("NFC")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("No_Compra")
                         .HasColumnType("int");
 
@@ -259,7 +316,8 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
@@ -288,7 +346,8 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     b.Property<string>("Nombre_Producto")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -304,6 +363,9 @@ namespace Proyecto_SouKuroApp.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InformeId"));
+
+                    b.Property<int>("CompraId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Fecha_Final")
                         .HasColumnType("datetime2");
@@ -330,6 +392,9 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PagoId"));
 
+                    b.Property<int>("CompraId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Estado")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -340,9 +405,6 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.Property<string>("Metodo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Monto")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("PagoId");
 
@@ -387,7 +449,8 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<decimal>("Precio")
                         .HasColumnType("decimal(18,2)");
@@ -440,15 +503,43 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("ProveedorId");
 
                     b.ToTable("proveedores");
+                });
+
+            modelBuilder.Entity("Shared.Models.Reservacion", b =>
+                {
+                    b.Property<int>("ReservacionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservacionId"));
+
+                    b.Property<string>("Cedula")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Nombre_Cliente")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("ReservacionId");
+
+                    b.ToTable("reservacion");
                 });
 
             modelBuilder.Entity("Shared.Models.Usuario", b =>
@@ -465,7 +556,8 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     b.Property<string>("Nombre_Usuario")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Rol")
                         .IsRequired()
@@ -490,6 +582,11 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.Property<string>("NombreCliente")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nombre_Usuario")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("VentaId");
 
@@ -547,6 +644,13 @@ namespace Proyecto_SouKuroApp.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Shared.Models.Centro_Detalle", b =>
+                {
+                    b.HasOne("Shared.Models.Centro_de_Pedidos", null)
+                        .WithMany("Detalle")
+                        .HasForeignKey("Centro_de_Pedidos");
+                });
+
             modelBuilder.Entity("Shared.Models.Compras_Detalles", b =>
                 {
                     b.HasOne("Shared.Models.Compra", null)
@@ -561,6 +665,11 @@ namespace Proyecto_SouKuroApp.Migrations
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Shared.Models.Centro_de_Pedidos", b =>
+                {
+                    b.Navigation("Detalle");
                 });
 
             modelBuilder.Entity("Shared.Models.Compra", b =>

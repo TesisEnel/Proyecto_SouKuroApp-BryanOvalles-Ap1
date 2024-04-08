@@ -12,13 +12,17 @@ public class Producto
 {
     [Key]
     public int ProductoId { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Debe ingresar un Nombre.")]
+    [RegularExpression(@"^[a-zA-ZñÑ\s]+$", ErrorMessage = "No se aceptan números ni caracteres especiales.")]
+    [StringLength(maximumLength: 30, MinimumLength = 2, ErrorMessage = "La longitud debe ser de 2 a 30 dígitos")]
     public string Nombre { get; set; } = string.Empty;
-    [Required]
-    public string Descripcion { get; set; } = string.Empty;
-    [Required]
+    [Required(ErrorMessage = "Es requerido que ingreses el Costo de Dicho Producto.")]
+    [Range(minimum: 0, maximum: 10000000000000000000, ErrorMessage = "La cantidad es menor o igual a 0 o es demasiado alto para el sistema Favor ingresar otro monto")]
+
     public decimal Precio { get; set; } = 0;
-    [Required]
+    [Required(ErrorMessage = "Es requerido que ingreses la cantidad de productos que hay en stock")]
+    [Range(minimum: 0, maximum: 10000000000000000000, ErrorMessage = "La cantidad es menor o igual a 0 o es demasiado alto para el sistema Favor ingresar otro monto")]
+
     public int Stock { get; set; } = 0;
 
     [ForeignKey("ProductoId")]

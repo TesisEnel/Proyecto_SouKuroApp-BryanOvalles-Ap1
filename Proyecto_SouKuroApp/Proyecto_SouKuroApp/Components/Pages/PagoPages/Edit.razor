@@ -23,11 +23,6 @@
                 <ValidationMessage For="() => pago.Fecha_Pago" class="text-danger" />
             </div>
             <div class="mb-3">
-                <label for="monto" class="form-label">Monto:</label>
-                <InputNumber id="monto" @bind-Value="pago.Monto" class="form-control" />
-                <ValidationMessage For="() => pago.Monto" class="text-danger" />
-            </div>
-            <div class="mb-3">
                 <label for="metodo" class="form-label">Metodo:</label>
                 <InputText id="metodo" @bind-Value="pago.Metodo" class="form-control" />
                 <ValidationMessage For="() => pago.Metodo" class="text-danger" />
