@@ -12,7 +12,7 @@ using Proyecto_SouKuroApp.Data;
 namespace Proyecto_SouKuroApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240408023525_Actualizando Tablas")]
+    [Migration("20240408190357_Actualizando Tablas")]
     partial class ActualizandoTablas
     {
         /// <inheritdoc />
@@ -443,10 +443,6 @@ namespace Proyecto_SouKuroApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductoId"));
 
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -461,6 +457,134 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.HasKey("ProductoId");
 
                     b.ToTable("productos");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductoId = 1,
+                            Nombre = "CocaCola",
+                            Precio = 30m,
+                            Stock = 89
+                        },
+                        new
+                        {
+                            ProductoId = 2,
+                            Nombre = "Pepsi",
+                            Precio = 30m,
+                            Stock = 89
+                        },
+                        new
+                        {
+                            ProductoId = 3,
+                            Nombre = "Jugo Rica",
+                            Precio = 70m,
+                            Stock = 189
+                        },
+                        new
+                        {
+                            ProductoId = 4,
+                            Nombre = "Jugo Mots",
+                            Precio = 90m,
+                            Stock = 69
+                        },
+                        new
+                        {
+                            ProductoId = 5,
+                            Nombre = "Fanta",
+                            Precio = 25m,
+                            Stock = 89
+                        },
+                        new
+                        {
+                            ProductoId = 6,
+                            Nombre = "Hamburguesa",
+                            Precio = 300m,
+                            Stock = 40
+                        },
+                        new
+                        {
+                            ProductoId = 7,
+                            Nombre = "Hot Dog",
+                            Precio = 70m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 8,
+                            Nombre = "Pizza",
+                            Precio = 270m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 9,
+                            Nombre = "Yaroa",
+                            Precio = 200m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 10,
+                            Nombre = "Lays",
+                            Precio = 35m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 11,
+                            Nombre = "Doritos",
+                            Precio = 30m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 12,
+                            Nombre = "Tostitos",
+                            Precio = 250m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 13,
+                            Nombre = "Taqueritos",
+                            Precio = 20m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 14,
+                            Nombre = "Chokis",
+                            Precio = 40m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 15,
+                            Nombre = "Brugal Blanco",
+                            Precio = 500m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 16,
+                            Nombre = "Brugal Extra viejo",
+                            Precio = 700m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 17,
+                            Nombre = "Cervesa Presidente",
+                            Precio = 140m,
+                            Stock = 29
+                        },
+                        new
+                        {
+                            ProductoId = 18,
+                            Nombre = "Corona",
+                            Precio = 120m,
+                            Stock = 29
+                        });
                 });
 
             modelBuilder.Entity("Shared.Models.Producto_Detalle", b =>
@@ -483,6 +607,32 @@ namespace Proyecto_SouKuroApp.Migrations
                     b.HasIndex("ProductoId");
 
                     b.ToTable("producto_Detalles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Categoria = "Bebidas",
+                            ProductoId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Categoria = "Comida",
+                            ProductoId = 6
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Categoria = "Snacks",
+                            ProductoId = 10
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Categoria = "Bebidas Alcoholicas",
+                            ProductoId = 14
+                        });
                 });
 
             modelBuilder.Entity("Shared.Models.Proveedor", b =>
@@ -529,6 +679,10 @@ namespace Proyecto_SouKuroApp.Migrations
                         .HasMaxLength(11)
                         .HasColumnType("nvarchar(11)");
 
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
@@ -536,6 +690,10 @@ namespace Proyecto_SouKuroApp.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Observaciones")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ReservacionId");
 
